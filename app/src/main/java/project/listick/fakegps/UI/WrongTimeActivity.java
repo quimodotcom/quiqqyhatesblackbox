@@ -10,7 +10,7 @@ import androidx.annotation.PluralsRes;
 
 import com.google.android.material.button.MaterialButton;
 
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 public class WrongTimeActivity extends Activity {
 

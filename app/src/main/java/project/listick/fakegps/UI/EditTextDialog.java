@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import project.listick.fakegps.Interfaces.EditTextDialogImpl;
 import project.listick.fakegps.OnSingleClickListener;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 /*
  * Created by LittleAngry on 02.01.19 (macOS 10.12)

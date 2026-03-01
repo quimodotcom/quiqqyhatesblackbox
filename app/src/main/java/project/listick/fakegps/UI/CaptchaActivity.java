@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 public class CaptchaActivity extends FragmentActivity {
 

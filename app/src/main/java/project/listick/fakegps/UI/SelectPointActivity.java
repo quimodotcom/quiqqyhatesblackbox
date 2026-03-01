@@ -39,7 +39,7 @@ import project.listick.fakegps.MapLoader;
 import project.listick.fakegps.MapUtil;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.Presenter.SearchPresenter;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.RouteMarker;
 import project.listick.fakegps.SpoofingPlaceInfo;
 

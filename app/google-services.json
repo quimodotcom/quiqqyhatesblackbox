@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:587032778142:android:26ec7c06575aab1689728f",
         "android_client_info": {
-          "package_name": "project.listick.fakegps"
+          "package_name": "com.quimodotcom.blackboxcure"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "587032778142-gnp4qjfd6fdeilcsagbc0at0qrndk4oq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "project.listick.fakegps",
+            "package_name": "com.quimodotcom.blackboxcure",
             "certificate_hash": "071a87c13c4bff710db3dd788a2cc0ffdafab6ed"
           }
         },

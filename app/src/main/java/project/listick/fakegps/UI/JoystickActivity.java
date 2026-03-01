@@ -29,7 +29,7 @@ import project.listick.fakegps.JoystickControl;
 import project.listick.fakegps.ListickApp;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.PermissionManager;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.SpoofingPlaceInfo;
 
 public class JoystickActivity extends Activity {

@@ -1,6 +1,7 @@
 package project.listick.fakegps;
 
 import android.content.Context;
+import com.quimodotcom.blackboxcure.R;
 import android.content.res.Resources;
 
 import androidx.annotation.NonNull;

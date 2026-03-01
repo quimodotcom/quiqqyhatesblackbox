@@ -57,7 +57,7 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
             try {
                 sService.attachRoutes(RouteManager.routes);
             } catch (Exception e) {
-                android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             }
         }
 

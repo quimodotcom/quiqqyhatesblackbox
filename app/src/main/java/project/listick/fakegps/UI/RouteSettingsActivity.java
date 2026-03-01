@@ -23,7 +23,7 @@ import project.listick.fakegps.Contract.RouteSettingsImpl;
 import project.listick.fakegps.ListickApp;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.Presenter.RouteSettingsPresenter;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 /*
  * Created by LittleAngry on 09.01.19 (macOS 10.12)

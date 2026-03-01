@@ -1,6 +1,7 @@
 package project.listick.fakegps;
 
 import android.content.Context;
+import com.quimodotcom.blackboxcure.R;
 import android.widget.TextView;
 
 import org.osmdroid.config.Configuration;

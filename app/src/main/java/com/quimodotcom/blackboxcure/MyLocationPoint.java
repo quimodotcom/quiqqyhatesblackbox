@@ -1,6 +1,7 @@
 package com.quimodotcom.blackboxcure;
 
 import android.util.Log;
+import com.quimodotcom.blackboxcure.R;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;

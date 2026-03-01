@@ -1,6 +1,7 @@
 package project.listick.fakegps;
 
 import android.app.Notification;
+import com.quimodotcom.blackboxcure.R;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -52,7 +53,7 @@ public class MainServiceControl {
         try {
             service.setPause(pause);
         } catch (Exception e) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
         }
     }
 
@@ -60,7 +61,7 @@ public class MainServiceControl {
         try {
             return service.isPaused();
         } catch (Exception e) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
         }
         return false;
     }

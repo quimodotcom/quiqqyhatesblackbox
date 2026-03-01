@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.UI.Fragments.PreferenceFragment;
 
 public class SettingsActivity extends Edge2EdgeActivity {

@@ -1,6 +1,7 @@
 package com.quimodotcom.blackboxcure;
 
 import static android.content.Context.WINDOW_SERVICE;
+import com.quimodotcom.blackboxcure.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

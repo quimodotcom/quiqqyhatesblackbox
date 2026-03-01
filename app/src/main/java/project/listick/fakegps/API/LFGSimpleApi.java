@@ -119,7 +119,7 @@ public class LFGSimpleApi {
                             float altitude = (float) geometry.getDouble(2);
                             callback.onRequestSuccess(altitude);
                         } catch (JSONException e) {
-                            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
                             callback.onRequestError();
                         }
                     }
@@ -233,7 +233,7 @@ public class LFGSimpleApi {
 
                         response.code = CODE_SUCCESS;
                     } catch (Exception e) {
-                        android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                        android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
                         response.code = CODE_UNKNOWN_ERROR;
                         response.error = e.getMessage();
                     }

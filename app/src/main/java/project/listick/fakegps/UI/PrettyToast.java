@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
 
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 public class PrettyToast {
 

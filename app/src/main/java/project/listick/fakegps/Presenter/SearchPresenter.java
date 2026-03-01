@@ -13,7 +13,7 @@ import project.listick.fakegps.Contract.SearchImpl;
 import project.listick.fakegps.Contract.SearchImpl.UI;
 import project.listick.fakegps.Enumerations.ERouteTransport;
 import project.listick.fakegps.ListickApp;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.SpoofingPlaceInfo;
 import project.listick.fakegps.UI.SelectPointActivity;
 
