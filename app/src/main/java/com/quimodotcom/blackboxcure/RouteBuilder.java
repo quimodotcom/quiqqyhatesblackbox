@@ -57,7 +57,7 @@ public class RouteBuilder {
 
         LFGSimpleApi.Directions directionsApi = new LFGSimpleApi.Directions(originLat, originLng, destLat, destLng, transport, captchaResult);
 
-        directionsApi.downloadRoute(response -> {
+        directionsApi.downloadRoute(activity, response -> {
             if (canceled)
                 return;
 

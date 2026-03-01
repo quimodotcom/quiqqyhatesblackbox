@@ -164,41 +164,84 @@ public class LFGSimpleApi {
             this.captchaResult = captchaResult;
         }
 
-        private String getRouteBuilderUrl() {
-            return API_BASE_URL + "build_route.php?profile=" + transport.name();
+        private String getRouteBuilderUrl(String orsApiKey) {
+            if (orsApiKey != null && !orsApiKey.trim().isEmpty()) {
+                // Return ORS endpoint if key is provided
+                String profilePath;
+                switch (transport) {
+                    case ROUTE_WALK:
+                        profilePath = "foot-walking";
+                        break;
+                    case ROUTE_BIKE:
+                        profilePath = "cycling-regular";
+                        break;
+                    case ROUTE_CAR:
+                    default:
+                        profilePath = "driving-car";
+                        break;
+                }
+                return "https://api.openrouteservice.org/v2/directions/" + profilePath + "/geojson";
+            } else {
+                // Fallback to OSM free routing
+                String baseUrl;
+                String profilePath;
+                switch (transport) {
+                    case ROUTE_WALK:
+                        baseUrl = "https://routing.openstreetmap.de/routed-foot/route/v1/";
+                        profilePath = "driving/";
+                        break;
+                    case ROUTE_BIKE:
+                        baseUrl = "https://routing.openstreetmap.de/routed-bike/route/v1/";
+                        profilePath = "driving/";
+                        break;
+                    case ROUTE_CAR:
+                    default:
+                        baseUrl = "https://routing.openstreetmap.de/routed-car/route/v1/";
+                        profilePath = "driving/";
+                        break;
+                }
+                return baseUrl + profilePath + sourcelong + "," + sourcelat + ";" + destlong + "," + destlat + "?overview=full&geometries=polyline";
+            }
         }
 
-        public void downloadRoute(DirectionsCallback callback) {
+        public void downloadRoute(android.content.Context context, DirectionsCallback callback) {
             DirectionsResponse response = new DirectionsResponse();
 
-            Map<String, Object[]> coordinates = new HashMap<>();
-            coordinates.put("coordinates", new Object[]{
-                    new Object[]{sourcelong, sourcelat},
-                    new Object[]{destlong, destlat},
-            });
+            String orsApiKey = project.listick.fakegps.AppPreferences.getOpenRouteServiceApiKey(context);
+            Request request;
 
-            JSONObject root = new JSONObject();
-            JSONObject data = new JSONObject(coordinates);
+            if (orsApiKey != null && !orsApiKey.trim().isEmpty()) {
+                // Create POST request for OpenRouteService
+                Map<String, Object[]> coordinates = new HashMap<>();
+                coordinates.put("coordinates", new Object[]{
+                        new Object[]{sourcelong, sourcelat},
+                        new Object[]{destlong, destlat},
+                });
 
-            try {
-                data.put("elevation", String.valueOf(true));
-                root.put("data", data);
-                if (captchaResult != null) {
-                    root.put("challenge_result", captchaResult);
+                JSONObject data = new JSONObject(coordinates);
+                try {
+                    data.put("elevation", String.valueOf(true));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+
+                MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+                RequestBody body = RequestBody.create(data.toString(), JSON);
+
+                request = new Request.Builder()
+                        .url(getRouteBuilderUrl(orsApiKey))
+                        .addHeader("Authorization", orsApiKey)
+                        .addHeader("Content-Type", "application/json; charset=utf-8")
+                        .addHeader("Accept", "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8")
+                        .post(body)
+                        .build();
+            } else {
+                // Create GET request for OSM fallback
+                request = new Request.Builder()
+                        .url(getRouteBuilderUrl(null))
+                        .get()
+                        .build();
             }
-
-
-            MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-            RequestBody body = RequestBody.create(root.toString(), JSON);
-
-            Request request = new Request.Builder()
-                    .url(getRouteBuilderUrl())
-                    .addHeader("Content-Type", "application/json; charset=utf-8")
-                    .post(body)
-                    .build();
 
             WebClient.getInstance().makeRequest(request, new Callback() {
                 @Override
@@ -216,20 +259,39 @@ public class LFGSimpleApi {
                         Log.d("RouteBuilder", "onResponse: " + responseString);
                         JSONObject contentObject = new JSONObject(responseString);
 
-                        if (contentObject.has("error_text") && contentObject.has("error_code")) {
-                            response.code = contentObject.getInt("error_code");
-                            response.error = contentObject.getString("error_text");
+                        if (contentObject.has("error")) {
+                            response.code = CODE_UNKNOWN_ERROR;
+                            response.error = contentObject.optJSONObject("error").optString("message", "Unknown ORS error");
                             callback.onResult(response);
                             return;
                         }
 
-                        JSONArray routeArray = contentObject.getJSONArray("routes");
-                        JSONObject routes = routeArray.getJSONObject(0);
-                        String encodedString = routes.getString("geometry");
-                        response.result = decodePolyline(encodedString, true);
+                        if (contentObject.has("code") && !contentObject.getString("code").equals("Ok")) {
+                            response.code = CODE_UNKNOWN_ERROR;
+                            response.error = contentObject.optString("message", "Unknown routing error");
+                            callback.onResult(response);
+                            return;
+                        }
 
-                        JSONObject jsonObject = routes.getJSONObject("summary");
-                        response.distance = distance = jsonObject.getDouble("distance");
+                        JSONArray routeArray = contentObject.has("routes") ? contentObject.getJSONArray("routes") : contentObject.getJSONArray("features");
+                        JSONObject routes = routeArray.getJSONObject(0);
+
+                        if (contentObject.has("features")) { // ORS v2
+                            JSONObject geometry = routes.getJSONObject("geometry");
+                            JSONArray coordinates = geometry.getJSONArray("coordinates");
+                            ArrayList<GeoPoint> points = new ArrayList<>();
+                            for (int i = 0; i < coordinates.length(); i++) {
+                                JSONArray coord = coordinates.getJSONArray(i);
+                                points.add(new GeoPoint(coord.getDouble(1), coord.getDouble(0)));
+                            }
+                            response.result = points;
+                            response.distance = distance = routes.getJSONObject("properties").getJSONObject("summary").getDouble("distance");
+                        } else { // OSRM
+                            String encodedString = routes.getString("geometry");
+                            // OSRM returns 2D polylines (lat/lng), not 3D (no elevation).
+                            response.result = decodePolyline(encodedString, false);
+                            response.distance = distance = routes.getDouble("distance");
+                        }
 
                         response.code = CODE_SUCCESS;
                     } catch (Exception e) {
