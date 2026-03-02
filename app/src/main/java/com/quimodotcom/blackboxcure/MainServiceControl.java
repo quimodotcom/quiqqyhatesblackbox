@@ -1,6 +1,7 @@
 package com.quimodotcom.blackboxcure;
 
 import android.app.Notification;
+import com.quimodotcom.blackboxcure.R;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

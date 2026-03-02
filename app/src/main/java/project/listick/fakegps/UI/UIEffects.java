@@ -8,7 +8,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.button.MaterialButton;
 
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 public class UIEffects {
     static class TextView {

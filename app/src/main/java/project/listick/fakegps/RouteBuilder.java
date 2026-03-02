@@ -34,7 +34,7 @@ public class RouteBuilder {
 
     public interface IRouteBuilder {
         void prepare();
-        void onRouteBuilt(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport);
+        void onRouteBuilt(ArrayList<GeoPoint> points, ArrayList<Integer> speedLimits, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport);
         void onRouteError(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport);
         void captchaResponse();
     }
@@ -57,14 +57,14 @@ public class RouteBuilder {
 
         LFGSimpleApi.Directions directionsApi = new LFGSimpleApi.Directions(originLat, originLng, destLat, destLng, transport, captchaResult);
 
-        directionsApi.downloadRoute(response -> {
+        directionsApi.downloadRoute(activity, response -> {
             if (canceled)
                 return;
 
             if (response.code == CODE_SUCCESS) {
                 response.distance = 0;
 
-                activity.runOnUiThread(() -> listener.onRouteBuilt(response.result, originLat, originLng, destLat, destLng, response.distance, transport));
+                activity.runOnUiThread(() -> listener.onRouteBuilt(response.result, response.speedLimits, originLat, originLng, destLat, destLng, response.distance, transport));
             } else if (response.code == CODE_CONNECTION_FAILED || response.code == CODE_UNKNOWN_ERROR) {
 
                 response.result = new ArrayList<>();

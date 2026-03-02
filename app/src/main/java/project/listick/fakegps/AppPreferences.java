@@ -1,6 +1,7 @@
 package project.listick.fakegps;
 
 import android.content.Context;
+import com.quimodotcom.blackboxcure.R;
 import android.content.res.Resources;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,10 @@ public class AppPreferences {
     }
     public static int getMapTileProvider(@NonNull Context context){
        return Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(MapLoader.DEFAULT_TILE_PROVIDER, String.valueOf(MapLoader.DEFAULT_TILES)));
+    }
+
+    public static String getOpenRouteServiceApiKey(@NonNull Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString("openrouteservice_api_key", "");
     }
 
     public static int getAccuracy(Context context){

@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.google.android.material.snackbar.Snackbar;
 
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 import static project.listick.fakegps.Contract.MockLocationPermissionImpl.Presenter;
 
@@ -35,7 +35,7 @@ public class MockLocationPermissionPresenter implements Presenter {
         try {
             mActivity.startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
 
             View decorView = mActivity.getWindow().getDecorView();
             Snackbar.make(decorView, mActivity.getString(R.string.dev_settings_error), Snackbar.LENGTH_LONG).show();

@@ -66,7 +66,7 @@ import project.listick.fakegps.Model.BookmarksDBHelper;
 import project.listick.fakegps.Model.MapsModel;
 import project.listick.fakegps.MultipleRoutesInfo;
 import project.listick.fakegps.PermissionManager;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.RouteBuilder;
 import project.listick.fakegps.RouteManager;
 import project.listick.fakegps.RouteMarker.OriginAndDestMarker;
@@ -326,7 +326,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                     mMap.getController().animateTo(geoPoint);
             }
         } catch (Exception e) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             PrettyToast.show(mActivity, mActivity.getString(R.string.error_get_currentloc), R.drawable.ic_navigation_black_24dp);
         }
     }
@@ -466,7 +466,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             }
 
             @Override
-            public void onRouteBuilt(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
+            public void onRouteBuilt(ArrayList<GeoPoint> points, ArrayList<Integer> speedLimits, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
                 mUserInterface.lockSearchBar(true);
                 mUserInterface.removeProgressLayout();
                 PrettyToast.show(mActivity, mActivity.getString(R.string.route_built), R.drawable.ic_route);
@@ -475,6 +475,9 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                 mDistance += distancePoly;
                 MultipleRoutesInfo multipleRoutesInfo = new MultipleRoutesInfo();
                 multipleRoutesInfo.setRoute(points);
+                if (speedLimits != null) {
+                    multipleRoutesInfo.setSpeedLimits(speedLimits);
+                }
                 multipleRoutesInfo.setDistance(distancePoly);
                 multipleRoutesInfo.setTransport(transport);
 
@@ -527,7 +530,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             @Override
             public void onRouteError(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
                 PrettyToast.show(mActivity, mActivity.getString(R.string.failed_to_build_route), R.drawable.ic_route);
-                onRouteBuilt(points, sourceLat, sourceLong, destLat, destLong, distance, transport);
+                onRouteBuilt(points, null, sourceLat, sourceLong, destLat, destLong, distance, transport);
             }
 
             @Override
@@ -708,7 +711,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             mContext.startActivity(intent);
         } catch (ActivityNotFoundException e) {
             Toast.makeText(mContext, R.string.unknown_error, Toast.LENGTH_LONG).show();
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
         }
     }
 

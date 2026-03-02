@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 import project.listick.fakegps.Contract.BookmarksImpl;
 import project.listick.fakegps.Presenter.BookmarksPresenter;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.RouteCoordinateMgr;
 public class BookmarksActivity extends FragmentActivity implements BookmarksImpl.UI {
 

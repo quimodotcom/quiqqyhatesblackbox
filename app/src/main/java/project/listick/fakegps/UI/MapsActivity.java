@@ -52,7 +52,7 @@ import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.PermissionManager;
 import project.listick.fakegps.Presenter.MapsPresenter;
 import project.listick.fakegps.Presenter.RouteSettingsPresenter;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.Services.RouteSpooferService;
 
 /*

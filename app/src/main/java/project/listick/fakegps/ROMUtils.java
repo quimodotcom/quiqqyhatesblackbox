@@ -30,7 +30,7 @@ public class ROMUtils {
                 throw new NullPointerException();
             return !miui.isEmpty();
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NullPointerException e) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             return false;
         }
     }
@@ -45,7 +45,7 @@ public class ROMUtils {
             }
             return true;
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             return false;
         }
     }

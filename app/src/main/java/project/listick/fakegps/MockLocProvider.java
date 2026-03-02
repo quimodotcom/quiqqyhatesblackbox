@@ -52,7 +52,7 @@ public class MockLocProvider {
                 locationManager.setTestProviderEnabled(NETWORK_PROVIDER, true);
 
             } catch (IllegalArgumentException | SecurityException e) {
-                android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             }
             return;
         }
@@ -63,7 +63,7 @@ public class MockLocProvider {
                 mService.setAccessible(true);
                 ILocationManager = (ILocationManager) mService.get(locationManager);
             } catch (Exception e) {
-                android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             }
         }
     }
@@ -90,7 +90,7 @@ public class MockLocProvider {
         try {
             locationManager.setTestProviderLocation(GPS_PROVIDER, gpsLocation);
         } catch (SecurityException se) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, se);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, se);
         }
     }
 
@@ -111,7 +111,7 @@ public class MockLocProvider {
         try {
             locationManager.setTestProviderLocation(NETWORK_PROVIDER, networkLocation);
         } catch (SecurityException se) {
-            android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, se);
+            android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, se);
         }
     }
 
@@ -135,7 +135,7 @@ public class MockLocProvider {
                 ILocationManager.reportLocation(gpsLocation, false);
             }
         } catch (Exception e) {
-            Log.d(BuildConfig.APPLICATION_ID, null, e);
+            Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
         }
     }
 
@@ -146,10 +146,19 @@ public class MockLocProvider {
     public static void removeProviders() {
         if (isMockLocationsEnabled) {
             try {
-                locationManager.removeTestProvider(GPS_PROVIDER);
-                locationManager.removeTestProvider(NETWORK_PROVIDER);
+                if (locationManager.getProvider(GPS_PROVIDER) != null) {
+                    locationManager.clearTestProviderEnabled(GPS_PROVIDER);
+                    locationManager.clearTestProviderLocation(GPS_PROVIDER);
+                    locationManager.removeTestProvider(GPS_PROVIDER);
+                }
+
+                if (locationManager.getProvider(NETWORK_PROVIDER) != null) {
+                    locationManager.clearTestProviderEnabled(NETWORK_PROVIDER);
+                    locationManager.clearTestProviderLocation(NETWORK_PROVIDER);
+                    locationManager.removeTestProvider(NETWORK_PROVIDER);
+                }
             } catch (IllegalArgumentException | SecurityException e) {
-                android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             }
         }
     }

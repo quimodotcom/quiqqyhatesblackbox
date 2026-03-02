@@ -44,7 +44,7 @@ public class PermissionManager {
         if (appOps == null)
             return false;
 
-        int mockLocationResult = appOps.checkOpNoThrow(AppOpsManager.OPSTR_MOCK_LOCATION, Process.myUid(), BuildConfig.APPLICATION_ID);
+        int mockLocationResult = appOps.checkOpNoThrow(AppOpsManager.OPSTR_MOCK_LOCATION, Process.myUid(), com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID);
 
         isMockLocationEnabled = mockLocationResult == AppOpsManager.MODE_ALLOWED;
         return isMockLocationEnabled;

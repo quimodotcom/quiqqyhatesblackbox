@@ -177,6 +177,11 @@
     <string name="auto_altitude_summary">Altitude when location is spoofing will be determined automatically</string>
     <string name="brake_at_turning_summary">Decrease speed when cornering</string>
     <string name="spoofing_preferences_title">Location spoofing preferences</string>
+    <string name="routing_api_preferences_title">Routing API</string>
+    <string name="openrouteservice_api_key_title">OpenRouteService API Key</string>
+    <string name="openrouteservice_api_key_summary">Required for car routing. Enter your OpenRouteService API key.</string>
+    <string name="openrouteservice_api_key_dialog">Enter your OpenRouteService API Key (from openrouteservice.org) to enable routing.</string>
+
     <string name="measurement_title">Measurement</string>
     <string name="accuracy_title">Accuracy</string>
     <string name="enter_valid_value">Please enter a valid value</string>

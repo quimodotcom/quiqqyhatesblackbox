@@ -18,7 +18,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.PermissionManager;
 import project.listick.fakegps.Presenter.MockLocationPermissionPresenter;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import project.listick.fakegps.ROMUtils;
 
 public class MockLocationPermissionActivity extends Activity {

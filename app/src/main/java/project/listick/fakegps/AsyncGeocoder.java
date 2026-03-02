@@ -38,7 +38,7 @@ public class AsyncGeocoder {
                 mActivity.runOnUiThread(() -> callback.onSuccess(result));
             } catch (IOException e) {
                 mActivity.runOnUiThread(callback::onError);
-                android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             }
         };
 
@@ -59,7 +59,7 @@ public class AsyncGeocoder {
                 mActivity.runOnUiThread(() -> callback.onSuccess(result));
             } catch (IOException e) {
                 mActivity.runOnUiThread(callback::onError);
-                android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+                android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
             }
         };
 
@@ -77,7 +77,7 @@ public class AsyncGeocoder {
 //                try {
 //                    body = responseBody.string();
 //                } catch (IOException e) {
-//                    android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+//                    android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
 //                    onError();
 //                }
 //                if (body == null) {
@@ -115,7 +115,7 @@ public class AsyncGeocoder {
 //
 //                    callback.onSuccess(addressList);
 //                } catch (Exception e) {
-//                    android.util.Log.d(project.listick.fakegps.BuildConfig.APPLICATION_ID, null, e);
+//                    android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
 //                }
 //
 //            }

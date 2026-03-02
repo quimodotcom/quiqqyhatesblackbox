@@ -1,6 +1,7 @@
 package project.listick.fakegps;
 
 import android.graphics.Bitmap;
+import com.quimodotcom.blackboxcure.R;
 import android.graphics.Canvas;
 import android.graphics.Point;
 

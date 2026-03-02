@@ -15,7 +15,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
 import project.listick.fakegps.AppPreferences;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 import rikka.preference.SimpleMenuPreference;
 
 public class PreferenceFragment extends PreferenceFragmentCompat {

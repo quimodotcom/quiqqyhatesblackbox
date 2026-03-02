@@ -135,7 +135,7 @@ public class MockLocProvider {
                 ILocationManager.reportLocation(gpsLocation, false);
             }
         } catch (Exception e) {
-            Log.d(BuildConfig.APPLICATION_ID, null, e);
+            Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
         }
     }
 

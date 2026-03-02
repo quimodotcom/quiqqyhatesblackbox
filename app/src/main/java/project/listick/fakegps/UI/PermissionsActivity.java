@@ -17,7 +17,7 @@ import com.google.android.material.button.MaterialButton;
 import project.listick.fakegps.Contract.PermissionsImpl;
 import project.listick.fakegps.OnSingleClickListener;
 import project.listick.fakegps.Presenter.PermissionsPresenter;
-import project.listick.fakegps.R;
+import com.quimodotcom.blackboxcure.R;
 
 public class PermissionsActivity extends Activity implements PermissionsImpl.UI {
 
