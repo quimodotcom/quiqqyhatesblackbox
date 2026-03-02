@@ -113,6 +113,53 @@
             app:icon="@drawable/ic_done"
             app:iconGravity="textStart" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/start_realtime"
+            style="@style/Widget.Material3.Button.Icon"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_below="@id/please_enable_location_services"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="#4CAF50"
+            android:gravity="center"
+            android:lines="1"
+            android:text="Start Realtime Smoothing"
+            android:textSize="18sp"
+            android:visibility="gone"
+            app:icon="@drawable/ic_done"
+            app:iconGravity="textStart" />
+
+        <LinearLayout
+            android:id="@+id/realtime_options"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_realtime"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="18dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:text="Buffer Delay (sec):"
+                android:textColor="@color/uicolor_text_high" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/realtime_buffer_input"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:inputType="number"
+                android:text="10"
+                android:textColor="@color/uicolor_text_high" />
+
+        </LinearLayout>
+
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/stop_button"

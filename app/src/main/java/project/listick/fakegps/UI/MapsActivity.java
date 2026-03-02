@@ -32,6 +32,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.textfield.TextInputEditText;
+import android.widget.CompoundButton;
+import android.content.SharedPreferences;
+import androidx.preference.PreferenceManager;
 
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.events.DelayedMapListener;
@@ -53,6 +58,7 @@ import project.listick.fakegps.PermissionManager;
 import project.listick.fakegps.Presenter.MapsPresenter;
 import project.listick.fakegps.Presenter.RouteSettingsPresenter;
 import com.quimodotcom.blackboxcure.R;
+import project.listick.fakegps.Services.RealtimeSpooferService;
 import project.listick.fakegps.Services.RouteSpooferService;
 
 /*
@@ -70,6 +76,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     private TextView mSearchLayout;
     private MaterialButton mStopContainer;
     private CardView mActiveRouteLayout;
+    private SwitchMaterial mRealtimeToggle;
+    private MaterialButton mStartRealtime;
+    private LinearLayout mRealtimeOptions;
+    private TextInputEditText mRealtimeBufferInput;
+    private boolean isRealtimeMode = false;
     private MaterialButton mPauseContainer;
     private MaterialButton mEditContainer;
     private MaterialButton mDoneContainer;
@@ -106,6 +117,10 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mStopContainer = findViewById(R.id.stop_button);
         mPauseContainer = findViewById(R.id.pause_button);
         mSpeedInfo = findViewById(R.id.speedometer);
+        mStartRealtime = findViewById(R.id.start_realtime);
+        mRealtimeOptions = findViewById(R.id.realtime_options);
+        mRealtimeBufferInput = findViewById(R.id.realtime_buffer_input);
+        mRealtimeToggle = findViewById(R.id.realtime_mode_toggle);
         mDistanceInfo = findViewById(R.id.distance_info);
         mDoneContainer = findViewById(R.id.start_spoofing);
         mEditContainer = findViewById(R.id.edit_button);
@@ -200,6 +215,55 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mRestoreLocation.setOnClickListener(v -> mPresenter.handleClear());
 
         getLocation.setOnClickListener(v -> mPresenter.onCurrentLocationClick());
+
+        mStartRealtime.setOnClickListener(v -> {
+            int buffer = 10;
+            try { buffer = Integer.parseInt(mRealtimeBufferInput.getText().toString()); } catch (Exception ignored) {}
+
+            Intent serviceIntent = new Intent(this, RealtimeSpooferService.class);
+            serviceIntent.putExtra(RealtimeSpooferService.KEY_BUFFER_DELAY, buffer);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent);
+            } else {
+                startService(serviceIntent);
+            }
+
+            mStartRealtime.setVisibility(View.GONE);
+            mRealtimeOptions.setVisibility(View.GONE);
+            mStopContainer.setVisibility(View.VISIBLE);
+        });
+
+        mRealtimeToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            isRealtimeMode = isChecked;
+            ShimmerFrameLayout addressShimmer = findViewById(R.id.address_shimmer);
+            if (isChecked) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
+                if (!prefs.getBoolean("realtime_warning_shown", false)) {
+                    alertDialog("Experimental Feature", "Realtime Drive Smoothing is an experimental feature that attempts to intercept real GPS coordinates and apply smoothing to them before faking the output. This requires you to drive a real vehicle. Use at your own risk!", true, "OK", (dialog, which) -> {
+                        prefs.edit().putBoolean("realtime_warning_shown", true).apply();
+                    }, "Cancel", (dialog, which) -> {
+                        mRealtimeToggle.setChecked(false);
+                        dialog.cancel();
+                    }, R.drawable.ic_round_warning_48);
+                }
+
+                mSearchLayout.setVisibility(View.GONE);
+                mDoneContainer.setVisibility(View.GONE);
+                mAddMoreRoute.setVisibility(View.GONE);
+                addressShimmer.setVisibility(View.GONE);
+                mSourceAddress.setVisibility(View.GONE);
+                mStartRealtime.setVisibility(View.VISIBLE);
+                mRealtimeOptions.setVisibility(View.VISIBLE);
+                mBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+            } else {
+                mSearchLayout.setVisibility(View.VISIBLE);
+                mDoneContainer.setVisibility(View.VISIBLE);
+                addressShimmer.setVisibility(View.VISIBLE);
+                mSourceAddress.setVisibility(View.VISIBLE);
+                mStartRealtime.setVisibility(View.GONE);
+                mRealtimeOptions.setVisibility(View.GONE);
+            }
+        });
 
         lockSearchBar(false);
 
