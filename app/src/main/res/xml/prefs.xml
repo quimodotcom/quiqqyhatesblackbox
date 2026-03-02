@@ -63,7 +63,7 @@
             android:summary="10 m."/>
         <EditTextPreference
             android:key="gps_updates_delay"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:defaultValue="1"
             android:icon="@drawable/ic_near_me"
             android:title="@string/gps_updates_delay"
