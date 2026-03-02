@@ -12,20 +12,37 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="0dp" />
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/realtime_mode_toggle"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/mode_toggle_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="Realtime"
-        android:textColor="@color/uicolor_text_high"
-        android:textStyle="bold"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="@color/cardview_infobar"
-        android:padding="8dp"
-        android:elevation="4dp" />
+        android:elevation="4dp"
+        app:checkedButton="@id/btn_manual_mode"
+        app:singleSelection="true"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_manual_mode"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manual"
+            android:textColor="@color/uicolor_text_high"
+            app:backgroundTint="@color/cardview_infobar" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_realtime_mode"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Realtime"
+            android:textColor="@color/uicolor_text_high"
+            app:backgroundTint="@color/cardview_infobar" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <RelativeLayout
         android:layout_width="wrap_content"
