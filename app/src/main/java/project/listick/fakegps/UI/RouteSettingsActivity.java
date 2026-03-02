@@ -116,7 +116,7 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
 
         mFollowSpeedLimit.setOnCheckedChangeListener((buttonView, isChecked) -> {
             speedField.setEnabled(!isChecked);
-            differenceField.setEnabled(!isChecked);
+            // differenceField should not be disabled when "Follow speed limit" is checked
         });
 
         mPresenter = new RouteSettingsPresenter(this);
@@ -124,8 +124,11 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
         mContinue.setOnClickListener(new OnSingleClickListener() {
             @Override
             public void onSingleClick(View v) {
-                if (!speedField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(speedField.getText().toString()) &&
-                        !differenceField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(differenceField.getText().toString())) {
+                boolean speedValid = !speedField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(speedField.getText().toString());
+                boolean diffValid = !differenceField.getText().toString().isEmpty() && TextUtils.isDigitsOnly(differenceField.getText().toString());
+                boolean isFollowSpeedLimit = mFollowSpeedLimit.isChecked();
+
+                if ((speedValid || isFollowSpeedLimit) && diffValid) {
                     String elevationStr = RouteSettingsActivity.this.elevation.getText().toString();
                     String elevationDiffStr = RouteSettingsActivity.this.elevationDiff.getText().toString();
 
@@ -151,11 +154,11 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
                             return;
                         }
                     }
-                    int currentSpeed = mFollowSpeedLimit.isChecked() ? 50 : Integer.parseInt(speedField.getText().toString());
-                    int currentDiff = mFollowSpeedLimit.isChecked() ? 0 : Integer.parseInt(differenceField.getText().toString());
-                    mPresenter.onContinueClick(currentSpeed, currentDiff, elevation, elevationDiff, mClosedRoute.isChecked(), mFollowSpeedLimit.isChecked(), mSmoothTurns.isChecked());
-                } else if (mFollowSpeedLimit.isChecked()) {
-                    // if speed limits checked, speed field might be empty and disabled.
+                    int currentSpeed = isFollowSpeedLimit ? 50 : Integer.parseInt(speedField.getText().toString());
+                    int currentDiff = Integer.parseInt(differenceField.getText().toString());
+                    mPresenter.onContinueClick(currentSpeed, currentDiff, elevation, elevationDiff, mClosedRoute.isChecked(), isFollowSpeedLimit, mSmoothTurns.isChecked());
+                } else if (isFollowSpeedLimit) {
+                    // if speed limits checked and diff is empty, default diff to 0.
                     String elevationStr = RouteSettingsActivity.this.elevation.getText().toString();
                     String elevationDiffStr = RouteSettingsActivity.this.elevationDiff.getText().toString();
 
@@ -165,7 +168,9 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
                     if (!elevationStr.isEmpty()) elevation = Float.parseFloat(elevationStr);
                     if (!elevationDiffStr.isEmpty()) elevationDiff = Float.parseFloat(elevationDiffStr);
 
-                    mPresenter.onContinueClick(50, 0, elevation, elevationDiff, mClosedRoute.isChecked(), true, mSmoothTurns.isChecked());
+                    int currentDiff = diffValid ? Integer.parseInt(differenceField.getText().toString()) : 0;
+
+                    mPresenter.onContinueClick(50, currentDiff, elevation, elevationDiff, mClosedRoute.isChecked(), true, mSmoothTurns.isChecked());
                 }
 
                 mPresenter.saveElevation(Float.parseFloat(elevation.getText().toString()), Float.parseFloat(elevationDiff.getText().toString()));
