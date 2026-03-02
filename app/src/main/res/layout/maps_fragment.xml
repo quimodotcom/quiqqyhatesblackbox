@@ -26,21 +26,21 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_manual_mode"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Manual"
-            android:textColor="@color/uicolor_text_high"
-            app:backgroundTint="@color/cardview_infobar" />
+            android:textColor="@color/toggle_text_color"
+            app:backgroundTint="@color/toggle_bg_color" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_realtime_mode"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Realtime"
-            android:textColor="@color/uicolor_text_high"
-            app:backgroundTint="@color/cardview_infobar" />
+            android:textColor="@color/toggle_text_color"
+            app:backgroundTint="@color/toggle_bg_color" />
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 

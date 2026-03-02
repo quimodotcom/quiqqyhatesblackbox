@@ -237,6 +237,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
             isRealtimeMode = (checkedId == R.id.btn_realtime_mode);
             View manualModeContainer = findViewById(R.id.manual_mode_container);
+            View realtimeModeContainer = findViewById(R.id.realtime_mode_container);
 
             if (isRealtimeMode) {
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
@@ -250,13 +251,12 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
                 }
 
                 if (manualModeContainer != null) manualModeContainer.setVisibility(View.GONE);
-                mStartRealtime.setVisibility(View.VISIBLE);
-                mRealtimeOptions.setVisibility(View.VISIBLE);
+                if (realtimeModeContainer != null) realtimeModeContainer.setVisibility(View.VISIBLE);
+
                 mBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 if (manualModeContainer != null) manualModeContainer.setVisibility(View.VISIBLE);
-                mStartRealtime.setVisibility(View.GONE);
-                mRealtimeOptions.setVisibility(View.GONE);
+                if (realtimeModeContainer != null) realtimeModeContainer.setVisibility(View.GONE);
             }
         });
 
