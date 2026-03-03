@@ -240,23 +240,18 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
             View realtimeModeContainer = findViewById(R.id.realtime_mode_container);
 
             if (isRealtimeMode) {
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MapsActivity.this);
-                if (!prefs.getBoolean("realtime_warning_shown", false)) {
-                    alertDialog("Experimental Feature", "Realtime Drive Smoothing is an experimental feature that attempts to intercept real GPS coordinates and apply smoothing to them before faking the output. This requires you to drive a real vehicle. Use at your own risk!", true, "OK", (dialog, which) -> {
-                        prefs.edit().putBoolean("realtime_warning_shown", true).apply();
-                    }, "Cancel", (dialog, which) -> {
-                        mModeToggleGroup.check(R.id.btn_manual_mode);
-                        dialog.cancel();
-                    }, R.drawable.ic_round_warning_48);
-                }
-
                 if (manualModeContainer != null) manualModeContainer.setVisibility(View.GONE);
                 if (realtimeModeContainer != null) realtimeModeContainer.setVisibility(View.VISIBLE);
+                mSearchLayout.setVisibility(View.GONE); // Ensure where_to text is completely hidden
+                mAddMoreRoute.setVisibility(View.GONE);
+                mDoneContainer.setVisibility(View.GONE); // regular start_spoofing button
 
                 mBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
                 if (manualModeContainer != null) manualModeContainer.setVisibility(View.VISIBLE);
                 if (realtimeModeContainer != null) realtimeModeContainer.setVisibility(View.GONE);
+                mSearchLayout.setVisibility(View.VISIBLE);
+                mDoneContainer.setVisibility(View.VISIBLE);
             }
         });
 
@@ -371,7 +366,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void startSpoofingVisibility(int visibility) {
-        mDoneContainer.setVisibility(visibility);
+        if (!isRealtimeMode) {
+            mDoneContainer.setVisibility(visibility);
+        } else {
+            mDoneContainer.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -382,12 +381,19 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void enablePause(int visibility) {
-        mPauseContainer.setVisibility(visibility);
+        if (!isRealtimeMode) {
+            mPauseContainer.setVisibility(visibility);
+        }
     }
 
     @Override
     public void enableStop(int visibility) {
         mStopContainer.setVisibility(visibility);
+
+        if (visibility == View.GONE && isRealtimeMode) {
+            mStartRealtime.setVisibility(View.VISIBLE);
+            mRealtimeOptions.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -497,6 +503,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     @Override
     public void setAddressShimmer(boolean enable) {
         ShimmerFrameLayout addressShimmer = findViewById(R.id.address_shimmer);
+        if (isRealtimeMode) {
+            if (addressShimmer != null) addressShimmer.setVisibility(View.GONE);
+            return;
+        }
+        if (addressShimmer != null) addressShimmer.setVisibility(View.VISIBLE);
         if (enable) {
             addressShimmer.showShimmer(true);
         } else {
@@ -507,7 +518,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void setAddMoreRoute(int visibilty) {
-        mAddMoreRoute.setVisibility(visibilty);
+        if (!isRealtimeMode) {
+            mAddMoreRoute.setVisibility(visibilty);
+        } else {
+            mAddMoreRoute.setVisibility(View.GONE);
+        }
         mMap.requestApplyInsets();
     }
 
@@ -533,6 +548,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void lockSearchBar(boolean isLocked) {
+        if (isRealtimeMode) {
+            mSearchLayout.setVisibility(View.GONE);
+            return;
+        }
+        mSearchLayout.setVisibility(View.VISIBLE);
 
         final View.OnClickListener searchLayoutClickListener;
 
