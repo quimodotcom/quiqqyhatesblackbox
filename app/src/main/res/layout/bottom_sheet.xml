@@ -23,43 +23,12 @@
             style="@style/uisearchview"
             android:layout_centerHorizontal="true"/>
 
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/mode_toggle_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/drag"
-            android:layout_marginBottom="8dp"
-            app:singleSelection="true"
-            app:checkedButton="@+id/btn_manual_mode">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_manual_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Manual"
-                style="?attr/materialButtonOutlinedStyle"
-                android:textColor="@color/toggle_text_color"
-                app:backgroundTint="@color/toggle_bg_color"
-                app:strokeColor="#00FF00" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_realtime_mode"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Realtime"
-                style="?attr/materialButtonOutlinedStyle"
-                android:textColor="@color/toggle_text_color"
-                app:backgroundTint="@color/toggle_bg_color"
-                app:strokeColor="#00FF00" />
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-
         <LinearLayout
             android:id="@+id/manual_mode_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/mode_toggle_group">
+            android:layout_below="@id/drag">
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/address_shimmer"

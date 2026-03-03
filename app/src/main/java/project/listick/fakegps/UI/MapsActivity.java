@@ -216,8 +216,6 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         getLocation.setOnClickListener(v -> mPresenter.onCurrentLocationClick());
 
         mStartRealtime.setOnClickListener(v -> {
-            mPresenter.handleStop(); // Stop any regular routing/fixed services first
-
             int buffer = 10;
             try { buffer = Integer.parseInt(mRealtimeBufferInput.getText().toString()); } catch (Exception ignored) {}
 
