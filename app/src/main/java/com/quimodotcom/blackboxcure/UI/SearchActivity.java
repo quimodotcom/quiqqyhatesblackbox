@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 
 import com.quimodotcom.blackboxcure.Contract.SearchImpl;
 import com.quimodotcom.blackboxcure.Enumerations.ERouteTransport;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.OnSingleClickListener;
 import com.quimodotcom.blackboxcure.Presenter.SearchPresenter;
 import com.quimodotcom.blackboxcure.R;
@@ -47,8 +47,8 @@ public class SearchActivity extends Activity implements SearchImpl.UI {
 
     public static void startActivity(Activity activity, String originAddress, double latitude, double longitude, boolean addRoute, Bundle options) {
         activity.startActivityForResult(new Intent(activity, SearchActivity.class).putExtra(SpoofingPlaceInfo.ORIGIN_ADDRESS, originAddress)
-                .putExtra(ListickApp.LATITUDE, latitude)
-                .putExtra(ListickApp.LONGITUDE, longitude)
+                .putExtra(BlackBoxCureApp.LATITUDE, latitude)
+                .putExtra(BlackBoxCureApp.LONGITUDE, longitude)
                 .putExtra(ADD_MORE_ROUTE, addRoute), ACTIVITY_REQUEST_CODE, options);
     }
 

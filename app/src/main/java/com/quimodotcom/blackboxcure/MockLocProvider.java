@@ -146,24 +146,28 @@ public class MockLocProvider {
     public static void removeProviders() {
         if (isMockLocationsEnabled) {
             try {
-                if (locationManager.getProvider(GPS_PROVIDER) != null) {
-                    try {
-                        locationManager.clearTestProviderEnabled(GPS_PROVIDER);
-                    } catch (Exception ignored) {}
-                    try {
-                        locationManager.clearTestProviderLocation(GPS_PROVIDER);
-                    } catch (Exception ignored) {}
+                try {
+                    locationManager.clearTestProviderLocation(GPS_PROVIDER);
+                } catch (Exception ignored) {}
+                try {
+                    locationManager.clearTestProviderEnabled(GPS_PROVIDER);
+                } catch (Exception ignored) {}
+                try {
                     locationManager.removeTestProvider(GPS_PROVIDER);
+                } catch (IllegalArgumentException | SecurityException e) {
+                    android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
                 }
 
-                if (locationManager.getProvider(NETWORK_PROVIDER) != null) {
-                    try {
-                        locationManager.clearTestProviderEnabled(NETWORK_PROVIDER);
-                    } catch (Exception ignored) {}
-                    try {
-                        locationManager.clearTestProviderLocation(NETWORK_PROVIDER);
-                    } catch (Exception ignored) {}
+                try {
+                    locationManager.clearTestProviderLocation(NETWORK_PROVIDER);
+                } catch (Exception ignored) {}
+                try {
+                    locationManager.clearTestProviderEnabled(NETWORK_PROVIDER);
+                } catch (Exception ignored) {}
+                try {
                     locationManager.removeTestProvider(NETWORK_PROVIDER);
+                } catch (IllegalArgumentException | SecurityException e) {
+                    android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);
                 }
             } catch (IllegalArgumentException | SecurityException e) {
                 android.util.Log.d(com.quimodotcom.blackboxcure.BuildConfig.APPLICATION_ID, null, e);

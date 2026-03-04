@@ -12,7 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.quimodotcom.blackboxcure.Contract.SearchImpl;
 import com.quimodotcom.blackboxcure.Contract.SearchImpl.UI;
 import com.quimodotcom.blackboxcure.Enumerations.ERouteTransport;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.R;
 import com.quimodotcom.blackboxcure.SpoofingPlaceInfo;
 import com.quimodotcom.blackboxcure.UI.SelectPointActivity;
@@ -74,14 +74,14 @@ public class SearchPresenter implements SearchImpl.Presenter {
         if (resultCode == Activity.RESULT_OK && data != null){
             if (requestCode == DESTINATION) {
                 this.preparedForFinish = true;
-                mDestLat = data.getDoubleExtra(ListickApp.LATITUDE, 0d);
-                mDestLong = data.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+                mDestLat = data.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+                mDestLong = data.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
                 mDestAddress = data.getStringExtra(SpoofingPlaceInfo.ADDRESS);
 
                 mUserInterface.setDestAddress(mDestAddress);
             } else if (requestCode == ORIGIN) {
-                mOriginLat = data.getDoubleExtra(ListickApp.LATITUDE, 0d);
-                mOriginLong = data.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+                mOriginLat = data.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+                mOriginLong = data.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
                 mOriginAddress = data.getStringExtra(SpoofingPlaceInfo.ADDRESS);
 
                 mUserInterface.setOriginAddress(mOriginAddress);
@@ -101,12 +101,12 @@ public class SearchPresenter implements SearchImpl.Presenter {
         view.clearFocus();
 
         Intent intent = mActivity.getIntent();
-        double originLat = intent.getDoubleExtra(ListickApp.LATITUDE, 0d);
-        double originLong = intent.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+        double originLat = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+        double originLong = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
 
         mActivity.startActivityForResult(new Intent(mActivity, SelectPointActivity.class)
-                .putExtra(ListickApp.LATITUDE,  originLat)
-                .putExtra(ListickApp.LONGITUDE, originLong), DESTINATION); // 1 is dest request code
+                .putExtra(BlackBoxCureApp.LATITUDE,  originLat)
+                .putExtra(BlackBoxCureApp.LONGITUDE, originLong), DESTINATION); // 1 is dest request code
     }
 
     private void findOnMap(int field){
@@ -119,12 +119,12 @@ public class SearchPresenter implements SearchImpl.Presenter {
 
         Intent intent = mActivity.getIntent();
 
-        double originLat = intent.getDoubleExtra(ListickApp.LATITUDE, 0d);
-        double originLong = intent.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+        double originLat = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+        double originLong = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
 
         mActivity.startActivityForResult(new Intent(mActivity, SelectPointActivity.class)
-                    .putExtra(ListickApp.LATITUDE,  originLat)
-                    .putExtra(ListickApp.LONGITUDE, originLong)
+                    .putExtra(BlackBoxCureApp.LATITUDE,  originLat)
+                    .putExtra(BlackBoxCureApp.LONGITUDE, originLong)
                     .putExtra(OPEN_SEARCH, true), field); // 1 is dest request code
 
     }
@@ -173,8 +173,8 @@ public class SearchPresenter implements SearchImpl.Presenter {
         Intent intent = mActivity.getIntent();
         mUserInterface.setOriginAddress(intent.getStringExtra(SpoofingPlaceInfo.ORIGIN_ADDRESS));
 
-        mOriginLat = intent.getDoubleExtra(ListickApp.LATITUDE, 0d);
-        mOriginLong = intent.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+        mOriginLat = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+        mOriginLong = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
     }
 
 }

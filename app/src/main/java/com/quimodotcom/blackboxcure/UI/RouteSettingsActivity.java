@@ -21,7 +21,7 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 
 import com.quimodotcom.blackboxcure.AppPreferences;
 import com.quimodotcom.blackboxcure.Contract.RouteSettingsImpl;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.OnSingleClickListener;
 import com.quimodotcom.blackboxcure.Presenter.RouteSettingsPresenter;
 import com.quimodotcom.blackboxcure.R;
@@ -58,9 +58,9 @@ public class RouteSettingsActivity extends FragmentActivity implements RouteSett
 
     public static void startActivity(Activity activity, double latitude, double longitude, double distance, boolean isRoute, boolean addMoreRoute, int requestCode) {
         activity.startActivityForResult(new Intent(activity, RouteSettingsActivity.class)
-                .putExtra(ListickApp.LATITUDE, latitude)
-                .putExtra(ListickApp.LONGITUDE, longitude)
-                .putExtra(ListickApp.DISTANCE, distance)
+                .putExtra(BlackBoxCureApp.LATITUDE, latitude)
+                .putExtra(BlackBoxCureApp.LONGITUDE, longitude)
+                .putExtra(BlackBoxCureApp.DISTANCE, distance)
                 .putExtra(RouteSettingsPresenter.ADD_MORE_ROUTE, addMoreRoute)
                 .putExtra(RouteSettingsPresenter.IS_ROUTE, isRoute), requestCode);
     }

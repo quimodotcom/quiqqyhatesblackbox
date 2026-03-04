@@ -26,7 +26,7 @@ import com.quimodotcom.blackboxcure.AppPreferences;
 import com.quimodotcom.blackboxcure.CurrentLocation;
 import com.quimodotcom.blackboxcure.Services.JoystickService;
 import com.quimodotcom.blackboxcure.JoystickControl;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.OnSingleClickListener;
 import com.quimodotcom.blackboxcure.PermissionManager;
 import com.quimodotcom.blackboxcure.R;
@@ -55,8 +55,8 @@ public class JoystickActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == JOYSTICK_SELECT_ON_MAP_REQUEST && resultCode == RESULT_OK) {
             isCanStartSpoofing = true;
-            latitude = data.getDoubleExtra(ListickApp.LATITUDE, 0d);
-            longitude = data.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+            latitude = data.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+            longitude = data.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
             selectOnMap.setText(data.getStringExtra(SpoofingPlaceInfo.ADDRESS));
             selectOnMap.setMaxLines(2);
             return;
@@ -78,8 +78,8 @@ public class JoystickActivity extends Activity {
         final EditText maxSpeed = findViewById(R.id.max_speed);
 
         Intent intent = getIntent();
-        inputLat = intent.getDoubleExtra(ListickApp.LATITUDE, 0d);
-        inputLng = intent.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+        inputLat = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+        inputLng = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
 
         final SharedPreferences joystickPrefs = getSharedPreferences(JoystickControl.JOYSTICK_PREFERENCES, Context.MODE_PRIVATE);
 
@@ -166,8 +166,8 @@ public class JoystickActivity extends Activity {
                 }
 
                 Intent intent = new Intent(JoystickActivity.this, SelectPointActivity.class);
-                intent.putExtra(ListickApp.LATITUDE, inputLat);
-                intent.putExtra(ListickApp.LONGITUDE, inputLng);
+                intent.putExtra(BlackBoxCureApp.LATITUDE, inputLat);
+                intent.putExtra(BlackBoxCureApp.LONGITUDE, inputLng);
                 intent.putExtra(JOYSTICK_SELECT_DEST, true);
 
                 isCanStartSpoofing = false;
@@ -208,8 +208,8 @@ public class JoystickActivity extends Activity {
                             .putInt(JoystickControl.JOYSTICK_MAX_SPEED, speed).apply();
 
                     startService(new Intent(JoystickActivity.this, JoystickService.class)
-                            .putExtra(ListickApp.LATITUDE, latitude)
-                            .putExtra(ListickApp.LONGITUDE, longitude)
+                            .putExtra(BlackBoxCureApp.LATITUDE, latitude)
+                            .putExtra(BlackBoxCureApp.LONGITUDE, longitude)
                             .putExtra(JoystickControl.JOYSTICK_MAX_SPEED, speed));
 
 
