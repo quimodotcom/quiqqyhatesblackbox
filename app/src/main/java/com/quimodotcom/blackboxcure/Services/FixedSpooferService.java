@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import com.quimodotcom.blackboxcure.AppPreferences;
 import com.quimodotcom.blackboxcure.FusedLocationsProvider;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.LocationOperations;
 import com.quimodotcom.blackboxcure.MainServiceControl;
 import com.quimodotcom.blackboxcure.MockLocProvider;
@@ -68,8 +68,8 @@ public class FixedSpooferService extends Service {
         mUpdatesDelay = AppPreferences.getUpdatesDelay(this);
         mDeviation = AppPreferences.getLocationError(this);
 
-        mLatitude = intent.getDoubleExtra(ListickApp.LATITUDE, 0d);
-        mLongitude = intent.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+        mLatitude = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+        mLongitude = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
         mElevation = intent.getFloatExtra(RouteSettingsPresenter.ELEVATION, 197);
         mElevationDiff = intent.getFloatExtra(RouteSettingsPresenter.ELEVATION_DIFF, 2);
 
@@ -90,8 +90,8 @@ public class FixedSpooferService extends Service {
                 if (data == null)
                     return;
 
-                mLatitude = data.getDouble(ListickApp.LATITUDE, mLatitude);
-                mLongitude = data.getDouble(ListickApp.LONGITUDE, mLongitude);
+                mLatitude = data.getDouble(BlackBoxCureApp.LATITUDE, mLatitude);
+                mLongitude = data.getDouble(BlackBoxCureApp.LONGITUDE, mLongitude);
                 geoPoint = new GeoPoint(mLatitude, mLongitude);
 
             }
@@ -199,7 +199,7 @@ import org.osmdroid.util.GeoPoint;
 import java.util.concurrent.ThreadLocalRandom;
 
 import com.quimodotcom.blackboxcure.FusedLocationsProvider;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.LocationOperations;
 import com.quimodotcom.blackboxcure.MainServiceControl;
 import com.quimodotcom.blackboxcure.MockLocProvider;
@@ -251,8 +251,8 @@ public class FixedSpooferService extends Service {
         mDeviation = AppPreferences.getLocationError(this);
         mSimulator = new MovementSimulator();
 
-        mLatitude = intent.getDoubleExtra(ListickApp.LATITUDE, 0d);
-        mLongitude = intent.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+        mLatitude = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+        mLongitude = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
         mElevation = intent.getFloatExtra(RouteSettingsPresenter.ELEVATION, 197);
         mElevationDiff = intent.getFloatExtra(RouteSettingsPresenter.ELEVATION_DIFF, 4);
 

@@ -11,7 +11,7 @@ import com.quimodotcom.blackboxcure.AppPreferences;
 import com.quimodotcom.blackboxcure.FusedLocationsProvider;
 import com.quimodotcom.blackboxcure.JoystickControl;
 import com.quimodotcom.blackboxcure.JoystickOverlay;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.MockLocProvider;
 import com.quimodotcom.blackboxcure.Randomizer;
 
@@ -54,8 +54,8 @@ public class JoystickService extends Service {
 
         handler = new Handler();
 
-        latitude = intent.getDoubleExtra(ListickApp.LATITUDE, 0d);
-        longitude = intent.getDoubleExtra(ListickApp.LONGITUDE, 0d);
+        latitude = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, 0d);
+        longitude = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, 0d);
 
         accuracy = AppPreferences.getAccuracy(this);
 

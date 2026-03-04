@@ -22,7 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import com.quimodotcom.blackboxcure.AppPreferences;
 import com.quimodotcom.blackboxcure.FusedLocationsProvider;
 import com.quimodotcom.blackboxcure.Geometry;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.LocationOperations;
 import com.quimodotcom.blackboxcure.MainServiceControl;
 import com.quimodotcom.blackboxcure.MockLocProvider;
@@ -140,8 +140,8 @@ public class RouteSpooferService extends Service {
         mDefaultUnit = intent.getIntExtra(KEY_DEFAULT_UNIT, AppPreferences.METERS);
         mBrakeAtTurning = intent.getBooleanExtra(KEY_BRAKE_AT_TURINING, true);
 
-        mTotalDistance = intent.getDoubleExtra(ListickApp.DISTANCE, 0);
-        mSpeed = intent.getIntExtra(ListickApp.SPEED, 0);
+        mTotalDistance = intent.getDoubleExtra(BlackBoxCureApp.DISTANCE, 0);
+        mSpeed = intent.getIntExtra(BlackBoxCureApp.SPEED, 0);
         mBearing = (float) ThreadLocalRandom.current().nextDouble(5, 180);
         mSpeedDiff = intent.getIntExtra(RouteSettingsPresenter.SPEED_DIFF, 0);
         mTrafficSide = intent.getIntExtra(AppPreferences.TRAFFIC_SIDE, AppPreferences.RIGHT_HAND_TRAFFIC);
@@ -447,7 +447,7 @@ public class RouteSpooferService extends Service {
                 double bearing = getNewAngle(latitude, longitude, mSpoofRoute.get(nextPosBearing).getLatitude(),
                         mSpoofRoute.get(nextPosBearing).getLongitude());
 
-                Log.d("Listick", "bearing: " + bearing + "\ndistance: " + distance);
+                Log.d("BlackBoxCure", "bearing: " + bearing + "\ndistance: " + distance);
 
                 GeoPoint geo = bearingDistance(latitude, longitude, distance, bearing + 25);
                 mCurrentStep.setLatitude(geo.getLatitude());
@@ -458,7 +458,7 @@ public class RouteSpooferService extends Service {
                 double bearing = getNewAngle(latitude, longitude, mSpoofRoute.get(nextPosBearing).getLatitude(),
                         mSpoofRoute.get(nextPosBearing).getLongitude());
 
-                Log.d("Listick", "bearing: " + bearing + "\ndistance: " + distance);
+                Log.d("BlackBoxCure", "bearing: " + bearing + "\ndistance: " + distance);
 
                 GeoPoint geo = bearingDistance(latitude, longitude, distance, bearing - 25);
                 mCurrentStep.setLatitude(geo.getLatitude());
