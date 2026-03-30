@@ -194,4 +194,8 @@
     <string name="adjust_clock">Adjust clock</string>
     <string name="our_telegram">Our Telegram</string>
 
-</resources>
+    <string name="time_trials">Time Trials</string>
+    <string name="static_mode">Static</string>
+    <string name="start_recording">Start Recording</string>
+    <string name="finish_and_play">Finish &amp; Play Trial</string>
+    <string name="start_static_spoofing">Start Static Spoofing</string>

@@ -47,7 +47,17 @@
                 android:id="@+id/btn_realtime_mode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Realtime"
+                android:text="@string/time_trials"
+                style="?attr/materialButtonOutlinedStyle"
+                android:textColor="@color/toggle_text_color"
+                app:backgroundTint="@color/toggle_bg_color"
+                app:strokeColor="#00FF00" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_static_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/static_mode"
                 style="?attr/materialButtonOutlinedStyle"
                 android:textColor="@color/toggle_text_color"
                 app:backgroundTint="@color/toggle_bg_color"
@@ -157,7 +167,7 @@
             app:iconGravity="textStart" />
 
         <LinearLayout
-            android:id="@+id/realtime_mode_container"
+            android:id="@+id/static_mode_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/please_enable_location_services"
@@ -165,7 +175,33 @@
             android:visibility="gone">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/start_realtime"
+                android:id="@+id/start_static_spoofing"
+                style="@style/Widget.Material3.Button.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#2196F3"
+                android:gravity="center"
+                android:lines="1"
+                android:text="@string/start_static_spoofing"
+                android:textSize="18sp"
+                app:icon="@drawable/ic_done"
+                app:iconGravity="textStart" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/time_trials_mode_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/please_enable_location_services"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/start_time_trial"
                 style="@style/Widget.Material3.Button.Icon"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
@@ -176,7 +212,7 @@
                 android:backgroundTint="#4CAF50"
                 android:gravity="center"
                 android:lines="1"
-                android:text="Start Realtime Smoothing"
+                android:text="@string/start_recording"
                 android:textSize="18sp"
                 app:icon="@drawable/ic_done"
                 app:iconGravity="textStart" />

@@ -343,6 +343,15 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             mUserInterface.setLocationDisabledNotification(View.VISIBLE);
     }
 
+    public void startStaticSpoofing(GeoPoint point) {
+        if (PermissionManager.isMockLocationsEnabled(mContext) || PermissionManager.isSystemApp(mContext)) {
+            LocationOperations loc = new LocationOperations();
+            loc.startStaticSpoofing(point, mActivity);
+        } else {
+            mActivity.startActivityForResult(new Intent(mContext, MockLocationPermissionActivity.class), MockLocationPermissionActivity.ML_GRANTED_REQUEST_CODE);
+        }
+    }
+
     @Override
     public void handleStop() {
         if (MainServiceControl.isRouteSpoofingServiceRunning(mContext)) {

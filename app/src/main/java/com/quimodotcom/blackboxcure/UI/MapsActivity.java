@@ -76,10 +76,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     private MaterialButton mStopContainer;
     private CardView mActiveRouteLayout;
     private MaterialButtonToggleGroup mModeToggleGroup;
-    private MaterialButton mStartRealtime;
-    private LinearLayout mRealtimeOptions;
-    private TextInputEditText mRealtimeBufferInput;
-    private boolean isRealtimeMode = false;
+    private MaterialButton mStartTimeTrial;
+    private LinearLayout mTimeTrialOptions;
+    private TextInputEditText mTimeTrialBufferInput;
+    private boolean isTimeTrialMode = false;
+    private boolean isStaticMode = false;
     private MaterialButton mPauseContainer;
     private MaterialButton mEditContainer;
     private MaterialButton mDoneContainer;
@@ -116,9 +117,9 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mStopContainer = findViewById(R.id.stop_button);
         mPauseContainer = findViewById(R.id.pause_button);
         mSpeedInfo = findViewById(R.id.speedometer);
-        mStartRealtime = findViewById(R.id.start_realtime);
-        mRealtimeOptions = findViewById(R.id.realtime_options);
-        mRealtimeBufferInput = findViewById(R.id.realtime_buffer_input);
+        mStartTimeTrial = findViewById(R.id.start_time_trial);
+        mTimeTrialOptions = findViewById(R.id.realtime_options);
+        mTimeTrialBufferInput = findViewById(R.id.realtime_buffer_input);
         mModeToggleGroup = findViewById(R.id.mode_toggle_group);
         mDistanceInfo = findViewById(R.id.distance_info);
         mDoneContainer = findViewById(R.id.start_spoofing);
@@ -215,43 +216,62 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
         getLocation.setOnClickListener(v -> mPresenter.onCurrentLocationClick());
 
-        mStartRealtime.setOnClickListener(v -> {
+        mStartTimeTrial.setOnClickListener(v -> {
+            if (PermissionManager.isServiceRunning(this, RealtimeSpooferService.class)) {
+                // Service is already running, this means we're in recording mode and want to switch to playback
+                Intent finishIntent = new Intent(RealtimeSpooferService.ACTION_FINISH_RECORDING);
+                sendBroadcast(finishIntent);
+                mStartTimeTrial.setEnabled(false);
+                mStartTimeTrial.setText("Playing Trial...");
+                return;
+            }
+
             mPresenter.handleStop(); // Stop any regular routing/fixed services first
 
             int buffer = 10;
-            try { buffer = Integer.parseInt(mRealtimeBufferInput.getText().toString()); } catch (Exception ignored) {}
+            try { buffer = Integer.parseInt(mTimeTrialBufferInput.getText().toString()); } catch (Exception ignored) {}
 
             Intent serviceIntent = new Intent(this, RealtimeSpooferService.class);
             serviceIntent.putExtra(RealtimeSpooferService.KEY_BUFFER_DELAY, buffer);
+            serviceIntent.putExtra(RealtimeSpooferService.KEY_START_LAT, mMap.getMapCenter().getLatitude());
+            serviceIntent.putExtra(RealtimeSpooferService.KEY_START_LON, mMap.getMapCenter().getLongitude());
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 startForegroundService(serviceIntent);
             } else {
                 startService(serviceIntent);
             }
 
-            mStartRealtime.setVisibility(View.GONE);
-            mRealtimeOptions.setVisibility(View.GONE);
+            mStartTimeTrial.setText(R.string.finish_and_play);
+            mTimeTrialOptions.setVisibility(View.GONE);
             mStopContainer.setVisibility(View.VISIBLE);
+        });
+
+        MaterialButton startStatic = findViewById(R.id.start_static_spoofing);
+        startStatic.setOnClickListener(v -> {
+            mPresenter.handleStop();
+            mPresenter.startStaticSpoofing(new GeoPoint(mMap.getMapCenter().getLatitude(), mMap.getMapCenter().getLongitude()));
         });
 
         mModeToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (!isChecked) return; // Ignore uncheck events
 
-            isRealtimeMode = (checkedId == R.id.btn_realtime_mode);
+            isTimeTrialMode = (checkedId == R.id.btn_realtime_mode);
+            isStaticMode = (checkedId == R.id.btn_static_mode);
+
             View manualModeContainer = findViewById(R.id.manual_mode_container);
-            View realtimeModeContainer = findViewById(R.id.realtime_mode_container);
+            View timeTrialsContainer = findViewById(R.id.time_trials_mode_container);
+            View staticModeContainer = findViewById(R.id.static_mode_container);
 
-            if (isRealtimeMode) {
-                if (manualModeContainer != null) manualModeContainer.setVisibility(View.GONE);
-                if (realtimeModeContainer != null) realtimeModeContainer.setVisibility(View.VISIBLE);
-                mSearchLayout.setVisibility(View.GONE); // Ensure where_to text is completely hidden
+            if (manualModeContainer != null) manualModeContainer.setVisibility(checkedId == R.id.btn_manual_mode ? View.VISIBLE : View.GONE);
+            if (timeTrialsContainer != null) timeTrialsContainer.setVisibility(checkedId == R.id.btn_realtime_mode ? View.VISIBLE : View.GONE);
+            if (staticModeContainer != null) staticModeContainer.setVisibility(checkedId == R.id.btn_static_mode ? View.VISIBLE : View.GONE);
+
+            if (isTimeTrialMode || isStaticMode) {
+                mSearchLayout.setVisibility(View.GONE);
                 mAddMoreRoute.setVisibility(View.GONE);
-                mDoneContainer.setVisibility(View.GONE); // regular start_spoofing button
-
+                mDoneContainer.setVisibility(View.GONE);
                 mBottomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
             } else {
-                if (manualModeContainer != null) manualModeContainer.setVisibility(View.VISIBLE);
-                if (realtimeModeContainer != null) realtimeModeContainer.setVisibility(View.GONE);
                 mSearchLayout.setVisibility(View.VISIBLE);
                 mDoneContainer.setVisibility(View.VISIBLE);
             }
@@ -368,7 +388,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void startSpoofingVisibility(int visibility) {
-        if (!isRealtimeMode) {
+        if (!isTimeTrialMode && !isStaticMode) {
             mDoneContainer.setVisibility(visibility);
         } else {
             mDoneContainer.setVisibility(View.GONE);
@@ -383,7 +403,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void enablePause(int visibility) {
-        if (!isRealtimeMode) {
+        if (!isTimeTrialMode && !isStaticMode) {
             mPauseContainer.setVisibility(visibility);
         }
     }
@@ -392,9 +412,11 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     public void enableStop(int visibility) {
         mStopContainer.setVisibility(visibility);
 
-        if (visibility == View.GONE && isRealtimeMode) {
-            mStartRealtime.setVisibility(View.VISIBLE);
-            mRealtimeOptions.setVisibility(View.VISIBLE);
+        if (visibility == View.GONE && isTimeTrialMode) {
+            mStartTimeTrial.setVisibility(View.VISIBLE);
+            mStartTimeTrial.setEnabled(true);
+            mStartTimeTrial.setText(R.string.start_recording);
+            mTimeTrialOptions.setVisibility(View.VISIBLE);
         }
     }
 
@@ -505,7 +527,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     @Override
     public void setAddressShimmer(boolean enable) {
         ShimmerFrameLayout addressShimmer = findViewById(R.id.address_shimmer);
-        if (isRealtimeMode) {
+        if (isTimeTrialMode || isStaticMode) {
             if (addressShimmer != null) addressShimmer.setVisibility(View.GONE);
             return;
         }
@@ -520,7 +542,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void setAddMoreRoute(int visibilty) {
-        if (!isRealtimeMode) {
+        if (!isTimeTrialMode && !isStaticMode) {
             mAddMoreRoute.setVisibility(visibilty);
         } else {
             mAddMoreRoute.setVisibility(View.GONE);
@@ -550,7 +572,7 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
     @Override
     public void lockSearchBar(boolean isLocked) {
-        if (isRealtimeMode) {
+        if (isTimeTrialMode || isStaticMode) {
             mSearchLayout.setVisibility(View.GONE);
             return;
         }
