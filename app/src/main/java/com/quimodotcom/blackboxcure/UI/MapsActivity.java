@@ -118,8 +118,8 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mPauseContainer = findViewById(R.id.pause_button);
         mSpeedInfo = findViewById(R.id.speedometer);
         mStartTimeTrial = findViewById(R.id.start_time_trial);
-        mTimeTrialOptions = findViewById(R.id.realtime_options);
-        mTimeTrialBufferInput = findViewById(R.id.realtime_buffer_input);
+        mTimeTrialOptions = findViewById(R.id.time_trial_options);
+        mTimeTrialBufferInput = findViewById(R.id.time_trial_buffer_input);
         mModeToggleGroup = findViewById(R.id.mode_toggle_group);
         mDistanceInfo = findViewById(R.id.distance_info);
         mDoneContainer = findViewById(R.id.start_spoofing);
