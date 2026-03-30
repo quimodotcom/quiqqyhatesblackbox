@@ -343,6 +343,15 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             mUserInterface.setLocationDisabledNotification(View.VISIBLE);
     }
 
+    public void startStaticSpoofing(GeoPoint point) {
+        if (PermissionManager.isMockLocationsEnabled(mContext) || PermissionManager.isSystemApp(mContext)) {
+            LocationOperations loc = new LocationOperations();
+            loc.startStaticSpoofing(point, mActivity);
+        } else {
+            mActivity.startActivityForResult(new Intent(mContext, MockLocationPermissionActivity.class), MockLocationPermissionActivity.ML_GRANTED_REQUEST_CODE);
+        }
+    }
+
     @Override
     public void handleStop() {
         if (MainServiceControl.isRouteSpoofingServiceRunning(mContext)) {
@@ -682,7 +691,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
 
     private void openTelegramChannel() {
         Intent intent = new Intent("android.intent.action.VIEW");
-        intent.setData(Uri.parse("https://t.me/project_listick"));
+        intent.setData(Uri.parse("https://t.me/blackboxcure"));
 
         if (PermissionManager.isPackageInstalled(ListickApp.TELEGRAM_PACKAGE_NAME))
             intent.setPackage(ListickApp.TELEGRAM_PACKAGE_NAME);
@@ -695,8 +704,8 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
     private void showAboutDialog() {
         Spanned spanned = HtmlCompat.fromHtml(mContext.getString(
                 R.string.about_view_source_code,
-                "<b><a href=\"https://github.com/projectlistick/listick_fake_gps\">GitHub</a></b>",
-                "<b><a href=\"https://t.me/project_listick\">Telegram</a></b>"), HtmlCompat.FROM_HTML_MODE_LEGACY);
+                "<b><a href=\"https://github.com/quimodotcom/quiqqyhatesblackbox\">GitHub</a></b>",
+                "<b><a href=\"https://t.me/blackboxcure\">Telegram</a></b>"), HtmlCompat.FROM_HTML_MODE_LEGACY);
 
         mUserInterface.alertDialog(mActivity.getString(R.string.about), spanned, true, null, null, null, null, R.drawable.pin);
 
