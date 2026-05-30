@@ -13,7 +13,7 @@ import com.quimodotcom.blackboxcure.API.LFGSimpleApi;
 import com.quimodotcom.blackboxcure.AppPreferences;
 import com.quimodotcom.blackboxcure.Contract.RouteSettingsImpl;
 import com.quimodotcom.blackboxcure.FakeGPSApplication;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.MultipleRoutesInfo;
 import com.quimodotcom.blackboxcure.RouteManager;
 import com.quimodotcom.blackboxcure.Services.FixedSpooferService;
@@ -151,8 +151,8 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
     private void startMocking() {
         Intent intent = mActivity.getIntent();
 
-        int speed = mSettingsPreferences.getInt(ListickApp.SPEED, 60);
-        int speedDiff = mSettingsPreferences.getInt(ListickApp.SPEED_DIFFERENCE, 0);
+        int speed = mSettingsPreferences.getInt(BlackBoxCureApp.SPEED, 60);
+        int speedDiff = mSettingsPreferences.getInt(BlackBoxCureApp.SPEED_DIFFERENCE, 0);
         int trafficSide = AppPreferences.getTrafficSide(mActivity);
 
         int originMinutes = mUserInterface.getOriginTimerMinutes();
@@ -181,7 +181,7 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
         int destTimeout = (dest_seconds + dest_minutes * 60) * 1000; // (convert to seconds) to ms
 
         if (mIsRoute) {
-            double distance = intent.getDoubleExtra(ListickApp.DISTANCE, Double.NaN);
+            double distance = intent.getDoubleExtra(BlackBoxCureApp.DISTANCE, Double.NaN);
 
             float accuracy = AppPreferences.getAccuracy(mActivity);
             int updatesDelay = AppPreferences.getUpdatesDelay(mActivity);
@@ -195,8 +195,8 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
             RouteManager.routes.get(0).setElevationDiff(elevationDiff);
 
             Intent i = new Intent(mActivity, RouteSpooferService.class)
-                    .putExtra(ListickApp.SPEED, speed)
-                    .putExtra(ListickApp.DISTANCE, distance)
+                    .putExtra(BlackBoxCureApp.SPEED, speed)
+                    .putExtra(BlackBoxCureApp.DISTANCE, distance)
                     .putExtra(ELEVATION, elevation)
                     .putExtra(ELEVATION_DIFF, elevationDiff)
                     .putExtra(SpoofingPlaceInfo.CLOSED_ROUTE_MOTION_INVERT, isClosedRoute)
@@ -214,12 +214,12 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
             FakeGPSApplication.getAppContext().bindService(i, mServiceConnection, Context.BIND_AUTO_CREATE);
 
         } else {
-            double latitude = intent.getDoubleExtra(ListickApp.LATITUDE, Double.NaN);
-            double longitude = intent.getDoubleExtra(ListickApp.LONGITUDE, Double.NaN);
+            double latitude = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, Double.NaN);
+            double longitude = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, Double.NaN);
 
             mActivity.startService(new Intent(mActivity, FixedSpooferService.class)
-                    .putExtra(ListickApp.LATITUDE, latitude)
-                    .putExtra(ListickApp.LONGITUDE, longitude)
+                    .putExtra(BlackBoxCureApp.LATITUDE, latitude)
+                    .putExtra(BlackBoxCureApp.LONGITUDE, longitude)
                     .putExtra(ELEVATION, elevation)
                     .putExtra("origin_timeout", originTimeout)
                     .putExtra("dest_timeout", destTimeout)
@@ -255,8 +255,8 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
         }
 
         Intent intent = mActivity.getIntent();
-        double latitude = intent.getDoubleExtra(ListickApp.LATITUDE, Double.NaN);
-        double longitude = intent.getDoubleExtra(ListickApp.LONGITUDE, Double.NaN);
+        double latitude = intent.getDoubleExtra(BlackBoxCureApp.LATITUDE, Double.NaN);
+        double longitude = intent.getDoubleExtra(BlackBoxCureApp.LONGITUDE, Double.NaN);
         elevationDiff = mSettingsPreferences.getFloat(ELEVATION_DIFF, 2);
         mUserInterface.startAltitudeDetection();
 
@@ -292,12 +292,12 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
 
 
     public void saveSpeedSettings(int speed, int difference) {
-        mSettingsPreferences.edit().putInt(ListickApp.SPEED, speed).putInt(ListickApp.SPEED_DIFFERENCE, difference).apply();
+        mSettingsPreferences.edit().putInt(BlackBoxCureApp.SPEED, speed).putInt(BlackBoxCureApp.SPEED_DIFFERENCE, difference).apply();
     }
 
     public void prepareUi() {
-        mUserInterface.getSpeed(mSettingsPreferences.getInt(ListickApp.SPEED, 60));
-        mUserInterface.getSpeedDifference(mSettingsPreferences.getInt(ListickApp.SPEED_DIFFERENCE, 10));
+        mUserInterface.getSpeed(mSettingsPreferences.getInt(BlackBoxCureApp.SPEED, 60));
+        mUserInterface.getSpeedDifference(mSettingsPreferences.getInt(BlackBoxCureApp.SPEED_DIFFERENCE, 10));
     }
 
 

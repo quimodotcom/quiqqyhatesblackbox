@@ -3,7 +3,7 @@ package com.quimodotcom.blackboxcure;
 /*
  * Created by LittleAngry on 31.12.18 (macOS 10.12)
  * */
-public class ListickApp {
+public class BlackBoxCureApp {
 
     public static final String PLAY_PACKAGE_NAME = "com.android.vending";
     public static final String TELEGRAM_PACKAGE_NAME = "org.telegram.messenger";

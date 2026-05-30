@@ -49,7 +49,7 @@ import java.util.Locale;
 
 import com.quimodotcom.blackboxcure.AppPreferences;
 import com.quimodotcom.blackboxcure.Contract.MapsImpl;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.LocationOperations;
 import com.quimodotcom.blackboxcure.MapLoader;
 import com.quimodotcom.blackboxcure.OnSingleClickListener;
@@ -471,14 +471,14 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         IGeoPoint mapCenter = mMap.getMapCenter();
-        outState.putDouble(ListickApp.LATITUDE, mapCenter.getLatitude());
-        outState.putDouble(ListickApp.LONGITUDE, mapCenter.getLongitude());
+        outState.putDouble(BlackBoxCureApp.LATITUDE, mapCenter.getLatitude());
+        outState.putDouble(BlackBoxCureApp.LONGITUDE, mapCenter.getLongitude());
     }
 
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        GeoPoint lastSavedPoint = new GeoPoint(savedInstanceState.getDouble(ListickApp.LATITUDE, 0f), savedInstanceState.getDouble(ListickApp.LONGITUDE, 0f));
+        GeoPoint lastSavedPoint = new GeoPoint(savedInstanceState.getDouble(BlackBoxCureApp.LATITUDE, 0f), savedInstanceState.getDouble(BlackBoxCureApp.LONGITUDE, 0f));
         mMap.getController().animateTo(lastSavedPoint);
     }
 
