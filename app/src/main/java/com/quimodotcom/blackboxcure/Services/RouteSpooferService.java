@@ -236,8 +236,7 @@ public class RouteSpooferService extends Service {
                     RouteManager.startMotion(points, null, mSlices[i], null, routeInfo.getSmoothTurns());
                 }
 
-                if (isClosedRoute) {
-                    isClosedRoute = false;
+                if (closedRoute) {
                     Collections.reverse(mSlices[i]);
                     if (mSlicesSpeeds[i] != null) {
                         Collections.reverse(mSlicesSpeeds[i]);
@@ -285,8 +284,6 @@ public class RouteSpooferService extends Service {
                 rSpeed = mSpoofRouteSpeeds.get(arrayRunIndex);
             } else {
                 rSpeed = mRandomizer.getRandomSpeed(mSpeed, mSpeedDiff);
-                if (mSpeedDiff != 0)
-                    rSpeed += Math.random() * mSpeedDiff;
             }
 
             float rElevation = (float) mCurrentStep.getAltitude();
@@ -418,8 +415,9 @@ public class RouteSpooferService extends Service {
                 return routeInfo;
             } else {
                 if (!isPaused && !waitingStart) {
-                    mPassedDistance += Geometry.distance(mSpoofRoute.get(arrayRunIndex - arrayRunSpeed).getLatitude(), mSpoofRoute.get(arrayRunIndex - arrayRunSpeed).getLongitude(),
+                    double stepDistance = Geometry.distance(mSpoofRoute.get(arrayRunIndex - arrayRunSpeed).getLatitude(), mSpoofRoute.get(arrayRunIndex - arrayRunSpeed).getLongitude(),
                             mSpoofRoute.get(arrayRunIndex).getLatitude(), mSpoofRoute.get(arrayRunIndex).getLongitude(), mDefaultUnit);
+                    mPassedDistance += stepDistance;
                     updateUI(speed, mPassedDistance);
                 } else {
                     updateUI(0, mPassedDistance);
@@ -507,10 +505,8 @@ public class RouteSpooferService extends Service {
 
             if (mDefaultUnit == AppPreferences.METERS) {
                 speed = (int) Geometry.Speed.kilometersToMeters(speed);
-                passedDistance = (int) Geometry.Speed.kilometersToMeters(passedDistance);
             } else if (mDefaultUnit == AppPreferences.MILES) {
                 speed = (int) Geometry.Speed.kilometersToMiles(speed);
-                passedDistance = (int) Geometry.Speed.kilometersToMiles(passedDistance);
             }
 
             mUpdateUI.putExtra(UI_PASSED_DISTANCE, passedDistance);

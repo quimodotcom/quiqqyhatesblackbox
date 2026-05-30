@@ -62,15 +62,13 @@ public class RouteBuilder {
                 return;
 
             if (response.code == CODE_SUCCESS) {
-                response.distance = 0;
-
                 activity.runOnUiThread(() -> listener.onRouteBuilt(response.result, response.speedLimits, originLat, originLng, destLat, destLng, response.distance, transport));
             } else if (response.code == CODE_CONNECTION_FAILED || response.code == CODE_UNKNOWN_ERROR) {
 
                 response.result = new ArrayList<>();
                 response.result.add(new GeoPoint(originLat, originLng));
                 response.result.add(new GeoPoint(destLat, destLng));
-                response.distance = 0;
+                // distance will be calculated in onRouteBuilt or remains 0
 
                 activity.runOnUiThread(() -> listener.onRouteError(response.result, originLat, originLng, destLat, destLng, response.distance, transport));
             } else if (response.code == CODE_RECAPTCHA_RESPONSE || response.code == CODE_BAD_RECAPTCHA_RESPONSE) {

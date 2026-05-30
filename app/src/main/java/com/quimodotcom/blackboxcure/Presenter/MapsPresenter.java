@@ -471,9 +471,15 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             public void onRouteBuilt(ArrayList<GeoPoint> points, ArrayList<Integer> speedLimits, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
                 mUserInterface.lockSearchBar(true);
                 mUserInterface.removeProgressLayout();
-                PrettyToast.show(mActivity, mActivity.getString(R.string.route_built), R.drawable.ic_route);
+
+                if (points.size() > 2) {
+                    PrettyToast.show(mActivity, mActivity.getString(R.string.route_built), R.drawable.ic_route);
+                } else {
+                    PrettyToast.show(mActivity, "Road mapping failed, using direct line", R.drawable.ic_route);
+                }
 
                 double distancePoly = MapUtil.drawPath(mMap, points);
+                if (mDistance == -1) mDistance = 0;
                 mDistance += distancePoly;
                 MultipleRoutesInfo multipleRoutesInfo = new MultipleRoutesInfo();
                 multipleRoutesInfo.setRoute(points);

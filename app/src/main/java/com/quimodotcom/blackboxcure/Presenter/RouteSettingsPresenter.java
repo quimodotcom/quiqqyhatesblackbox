@@ -121,15 +121,15 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
             saveElevation(elevation, elevationDiff);
             this.isClosedRoute = isClosedRoute;
         }
+
+        if (mIsRoute && !RouteManager.routes.isEmpty()) {
+            MultipleRoutesInfo currentRoute = RouteManager.routes.get(RouteManager.routes.size() - 1);
+            currentRoute.setFollowSpeedLimits(followSpeedLimits);
+            currentRoute.setSmoothTurns(smoothTurns);
+        }
+
         // if followSpeedLimits is true, speed is automatically handled, so difference check is fine to pass
         if (followSpeedLimits || checkDifference(speed, difference)) {
-            // Apply speed settings directly to route manager if follow speed limits is requested.
-            // RouteSpooferService will read this from RouteManager.
-            if (mIsRoute && !RouteManager.routes.isEmpty()) {
-                MultipleRoutesInfo currentRoute = RouteManager.routes.get(RouteManager.routes.size() - 1);
-                currentRoute.setFollowSpeedLimits(followSpeedLimits);
-                currentRoute.setSmoothTurns(smoothTurns);
-            }
             startMocking();
         }
     }

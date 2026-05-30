@@ -258,23 +258,37 @@ public class LFGSimpleApi {
                             return;
                         }
 
-                        JSONArray routeArray = contentObject.has("routes") ? contentObject.getJSONArray("routes") : contentObject.getJSONArray("features");
+                            JSONArray routeArray = contentObject.has("routes") ? contentObject.getJSONArray("routes") : (contentObject.has("features") ? contentObject.getJSONArray("features") : null);
+                            if (routeArray == null || routeArray.length() == 0) {
+                                response.code = CODE_UNKNOWN_ERROR;
+                                response.error = "No routes found in response";
+                                callback.onResult(response);
+                                return;
+                            }
                         JSONObject routes = routeArray.getJSONObject(0);
 
-                        if (contentObject.has("features")) { // ORS v2
+                            if (contentObject.has("features") || routes.has("geometry") && routes.optJSONObject("geometry") != null) { // ORS v2 / GeoJSON
                             JSONObject geometry = routes.getJSONObject("geometry");
                             JSONArray coordinates = geometry.getJSONArray("coordinates");
                             ArrayList<GeoPoint> points = new ArrayList<>();
                             for (int i = 0; i < coordinates.length(); i++) {
                                 JSONArray coord = coordinates.getJSONArray(i);
-                                points.add(new GeoPoint(coord.getDouble(1), coord.getDouble(0)));
+                                    // ORS returns [lng, lat, (alt)]
+                                    double lat = coord.getDouble(1);
+                                    double lng = coord.getDouble(0);
+                                    double alt = coord.length() > 2 ? coord.getDouble(2) : 0.0;
+                                    points.add(new GeoPoint(lat, lng, alt));
                             }
                             response.result = points;
-                            response.distance = distance = routes.getJSONObject("properties").getJSONObject("summary").getDouble("distance");
+                                if (routes.has("properties") && routes.getJSONObject("properties").has("summary")) {
+                                    response.distance = distance = routes.getJSONObject("properties").getJSONObject("summary").getDouble("distance");
+                                } else {
+                                    response.distance = distance = 0; // Will be calculated later if needed
+                                }
 
                             // Extract speed limits if requested and available
                             response.speedLimits = new ArrayList<>();
-                            if (routes.getJSONObject("properties").has("extras") && routes.getJSONObject("properties").getJSONObject("extras").has("speedlimit")) {
+                                if (routes.has("properties") && routes.getJSONObject("properties").has("extras") && routes.getJSONObject("properties").getJSONObject("extras").has("speedlimit")) {
                                 JSONArray speedLimitsArr = routes.getJSONObject("properties").getJSONObject("extras").getJSONObject("speedlimit").getJSONArray("values");
                                 int currentSpeedLimitIdx = 0;
                                 int currentSpeed = 50; // default
@@ -282,7 +296,7 @@ public class LFGSimpleApi {
                                     if (currentSpeedLimitIdx < speedLimitsArr.length()) {
                                         JSONArray segment = speedLimitsArr.getJSONArray(currentSpeedLimitIdx);
                                         int endIdx = segment.getInt(1);
-                                        if (i >= endIdx) {
+                                            if (i > endIdx) {
                                             currentSpeedLimitIdx++;
                                             if (currentSpeedLimitIdx < speedLimitsArr.length()) {
                                                 segment = speedLimitsArr.getJSONArray(currentSpeedLimitIdx);
