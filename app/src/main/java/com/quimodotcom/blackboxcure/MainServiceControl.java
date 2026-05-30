@@ -34,8 +34,8 @@ public class MainServiceControl {
     public void sendNewCoordinates(double latitude, double longitude){
         Intent local = new Intent();
         local.setAction(SERVICE_CONTROL_ACTION);
-        local.putExtra(ListickApp.LATITUDE, latitude);
-        local.putExtra(ListickApp.LONGITUDE, longitude);
+        local.putExtra(BlackBoxCureApp.LATITUDE, latitude);
+        local.putExtra(BlackBoxCureApp.LONGITUDE, longitude);
         mContext.sendBroadcast(local);
     }
 

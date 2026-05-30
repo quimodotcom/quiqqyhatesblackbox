@@ -34,7 +34,7 @@ import java.util.TimerTask;
 
 import com.quimodotcom.blackboxcure.AsyncGeocoder;
 import com.quimodotcom.blackboxcure.ImageUtils;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.MapLoader;
 import com.quimodotcom.blackboxcure.MapUtil;
 import com.quimodotcom.blackboxcure.OnSingleClickListener;
@@ -138,8 +138,8 @@ public class SelectPointActivity extends Edge2EdgeActivity {
                 Intent result = new Intent(SelectPointActivity.this, MapsActivity.class);
                 result.putExtra(SpoofingPlaceInfo.ORIGIN_LAT, sourceLat);
                 result.putExtra(SpoofingPlaceInfo.ORIGIN_LNG, sourceLong);
-                result.putExtra(ListickApp.LATITUDE, mapView.getMapCenter().getLatitude());
-                result.putExtra(ListickApp.LONGITUDE, mapView.getMapCenter().getLongitude());
+                result.putExtra(BlackBoxCureApp.LATITUDE, mapView.getMapCenter().getLatitude());
+                result.putExtra(BlackBoxCureApp.LONGITUDE, mapView.getMapCenter().getLongitude());
                 result.putExtra(SpoofingPlaceInfo.ADDRESS, address);
                 setResult(RESULT_OK, result);
                 finish();

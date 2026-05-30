@@ -54,7 +54,7 @@ import com.quimodotcom.blackboxcure.DeviceUtils;
 import com.quimodotcom.blackboxcure.Enumerations.ERouteTransport;
 import com.quimodotcom.blackboxcure.FakeGPSApplication;
 import com.quimodotcom.blackboxcure.JoystickOverlay;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.LocationMarker;
 import com.quimodotcom.blackboxcure.LocationOperations;
 import com.quimodotcom.blackboxcure.LocationServices;
@@ -122,11 +122,11 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         restoreRoute();
         sendDeviceAnalytics();
 
-        if (!PermissionManager.isPackageInstalled(ListickApp.TELEGRAM_PACKAGE_NAME)) {
+        if (!PermissionManager.isPackageInstalled(BlackBoxCureApp.TELEGRAM_PACKAGE_NAME)) {
             mUserInterface.removeMenuItem(R.id.our_telegram);
         }
 
-        if (!PermissionManager.isPackageInstalled(ListickApp.PLAY_PACKAGE_NAME)) {
+        if (!PermissionManager.isPackageInstalled(BlackBoxCureApp.PLAY_PACKAGE_NAME)) {
             mUserInterface.removeMenuItem(R.id.rate_app);
         }
     }
@@ -386,6 +386,7 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             handleStop();
             MockLocProvider.initTestProvider(); // re-init mock location provider for init LocationManager
             MockLocProvider.removeProviders();
+            onCurrentLocationClick(); // force map to jump back to real location
             dialogInterface.cancel();
         };
 
@@ -693,10 +694,10 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         Intent intent = new Intent("android.intent.action.VIEW");
         intent.setData(Uri.parse("https://t.me/blackboxcure"));
 
-        if (PermissionManager.isPackageInstalled(ListickApp.TELEGRAM_PACKAGE_NAME))
-            intent.setPackage(ListickApp.TELEGRAM_PACKAGE_NAME);
-        else if (PermissionManager.isPackageInstalled(ListickApp.TELEGRAM_WEB_PACKAGE_NAME))
-            intent.setPackage(ListickApp.TELEGRAM_WEB_PACKAGE_NAME);
+        if (PermissionManager.isPackageInstalled(BlackBoxCureApp.TELEGRAM_PACKAGE_NAME))
+            intent.setPackage(BlackBoxCureApp.TELEGRAM_PACKAGE_NAME);
+        else if (PermissionManager.isPackageInstalled(BlackBoxCureApp.TELEGRAM_WEB_PACKAGE_NAME))
+            intent.setPackage(BlackBoxCureApp.TELEGRAM_WEB_PACKAGE_NAME);
 
         mActivity.startActivity(intent);
     }
@@ -813,8 +814,8 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
     public void startJoystickActivity() {
         if (!MainServiceControl.isRouteSpoofingServiceRunning(mContext) && !MainServiceControl.isFixedSpoofingServiceRunning(mContext))
             mContext.startActivity(new Intent(mContext, JoystickActivity.class)
-                    .putExtra(ListickApp.LATITUDE, mMap.getMapCenter().getLatitude())
-                    .putExtra(ListickApp.LONGITUDE, mMap.getMapCenter().getLongitude()));
+                    .putExtra(BlackBoxCureApp.LATITUDE, mMap.getMapCenter().getLatitude())
+                    .putExtra(BlackBoxCureApp.LONGITUDE, mMap.getMapCenter().getLongitude()));
         else {
             DialogInterface.OnClickListener click = (DialogInterface dialogInterface, int i) -> dialogInterface.cancel();
             DialogInterface.OnClickListener stopSpoofing = (DialogInterface dialogInterface, int i) -> {
@@ -925,10 +926,10 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             Location androidLocations = currentLocation.getLocation(LocationManager.PASSIVE_PROVIDER);
             Location location = (androidLocations != null) ? androidLocations : currentLocation.getLocation();
             if (location != null)
-                mContext.getSharedPreferences(ListickApp.LOCATION_PREFERENCES, Context.MODE_PRIVATE).edit()
-                        .putFloat(ListickApp.LATITUDE, (float) location.getLatitude())
-                        .putFloat(ListickApp.LONGITUDE, (float) location.getLongitude())
-                        .putFloat(ListickApp.ZOOM, (float) mMap.getZoomLevelDouble())
+                mContext.getSharedPreferences(BlackBoxCureApp.LOCATION_PREFERENCES, Context.MODE_PRIVATE).edit()
+                        .putFloat(BlackBoxCureApp.LATITUDE, (float) location.getLatitude())
+                        .putFloat(BlackBoxCureApp.LONGITUDE, (float) location.getLongitude())
+                        .putFloat(BlackBoxCureApp.ZOOM, (float) mMap.getZoomLevelDouble())
                         .apply();
         }
     }

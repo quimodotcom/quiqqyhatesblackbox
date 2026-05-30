@@ -9,7 +9,7 @@ import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
 import com.quimodotcom.blackboxcure.Contract.MapsImpl;
-import com.quimodotcom.blackboxcure.ListickApp;
+import com.quimodotcom.blackboxcure.BlackBoxCureApp;
 import com.quimodotcom.blackboxcure.PermissionManager;
 import com.quimodotcom.blackboxcure.UI.PermissionsActivity;
 
@@ -37,9 +37,9 @@ public class MapsModel implements MapsImpl.ModelImpl {
 
     @Override
     public void moveCameraToLastLocation() {
-        SharedPreferences locationPreferences = mContext.getSharedPreferences(ListickApp.LOCATION_PREFERENCES, Context.MODE_PRIVATE);
-        mMap.getController().animateTo(new GeoPoint(locationPreferences.getFloat(ListickApp.LATITUDE, 0f), locationPreferences.getFloat(ListickApp.LONGITUDE, 0f)));
-        mMap.getController().setZoom(locationPreferences.getFloat(ListickApp.ZOOM, ListickApp.STANDART_ZOOM_VALUE));
+        SharedPreferences locationPreferences = mContext.getSharedPreferences(BlackBoxCureApp.LOCATION_PREFERENCES, Context.MODE_PRIVATE);
+        mMap.getController().animateTo(new GeoPoint(locationPreferences.getFloat(BlackBoxCureApp.LATITUDE, 0f), locationPreferences.getFloat(BlackBoxCureApp.LONGITUDE, 0f)));
+        mMap.getController().setZoom(locationPreferences.getFloat(BlackBoxCureApp.ZOOM, BlackBoxCureApp.STANDART_ZOOM_VALUE));
     }
 
 }
