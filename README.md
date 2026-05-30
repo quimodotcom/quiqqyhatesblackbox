@@ -1,4 +1,4 @@
-# project listick
+# Quiqqy Hates Blackboxes
 Application for the spoofing your coordinates by satellite and cellular networks. This will help you if you are a developer, or so that no one knows where you really are. All you need to do is to specify a new location to change your location information. Most applications you run will get dummy coordinates, and your real location will be hidden.
 
 #### Features:
@@ -12,7 +12,7 @@ Application for the spoofing your coordinates by satellite and cellular networks
 - Automatic elevation determination (Altitude)
 
 ## Download
-<a href='https://play.google.com/store/apps/details?id=project.listick.fakegps'><img alt='Get it on Google Play' src='https://play.google.com/intl/ja/badges/static/images/badges/en_badge_web_generic.png' width='200'/></a>
+<a href='https://play.google.com/store/apps/details?id=com.quimodotcom.blackboxcure'><img alt='Get it on Google Play' src='https://play.google.com/intl/ja/badges/static/images/badges/en_badge_web_generic.png' width='200'/></a>
 
 
 ## How does it work?
@@ -22,14 +22,14 @@ How do I start spoofing a location? After installing this application, you must 
 
 1. Enable Developer Options in phone Settings. You can see how to do this on manufacturer website.
 2. Go to the developer settings, and find Mock Location (or Simulate Location) item.
-3. Click on it and pick Listick Fake GPS.
+3. Click on it and pick Quiqqy Hates Blackboxes.
 ## Why would I do that?
 There are many scenarios for using this application - social networks, games, and so on. And it also helps you to stay anonymous online.
 
 ## How to use it without developer options?
 There are two ways to do this:
 1. The first way (Only for Android Oreo and lower) In the application settings there Is a "Move to system" item, click on it and phone will reboot, after booting the system, you will notice that the application is in system partition.
-2. The second way: Move .apk of Listick Fake GPS in /system/priv-app/ manually. You can use TWRP or System App Converter to do this.
+2. The second way: Move .apk of Quiqqy Hates Blackboxes in /system/priv-app/ manually. You can use TWRP or System App Converter to do this.
 
 ## License
-Listick Fake GPS is distributed under GNU GPL V3.
+Quiqqy Hates Blackboxes is distributed under GNU GPL V3.

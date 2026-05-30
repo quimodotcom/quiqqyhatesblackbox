@@ -1,6 +1,7 @@
 package com.quimodotcom.blackboxcure;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 
 import org.osmdroid.util.GeoPoint;
@@ -8,12 +9,43 @@ import org.osmdroid.util.GeoPoint;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import com.quimodotcom.blackboxcure.Services.FixedSpooferService;
 import com.quimodotcom.blackboxcure.UI.RouteSettingsActivity;
 
 public class LocationOperations {
 
     public static final int ROUTE_SETTINGS_REQUEST_CODE = 3;
     public static final int FIXED_SETTINGS_REQUEST_CODE = 5;
+
+    public void startStaticSpoofing(GeoPoint geoPoint, Activity mActivity) {
+        Intent serviceIntent = new Intent(mActivity, FixedSpooferService.class);
+        serviceIntent.putExtra(ListickApp.LATITUDE, geoPoint.getLatitude());
+        serviceIntent.putExtra(ListickApp.LONGITUDE, geoPoint.getLongitude());
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mActivity.startForegroundService(serviceIntent);
+        } else {
+            mActivity.startService(serviceIntent);
+        }
+
+        if (mActivity instanceof com.quimodotcom.blackboxcure.Contract.MapsImpl.UIImpl) {
+            ((com.quimodotcom.blackboxcure.Contract.MapsImpl.UIImpl) mActivity).enableStop(android.view.View.VISIBLE);
+            ((com.quimodotcom.blackboxcure.Contract.MapsImpl.UIImpl) mActivity).lockSearchBar(true);
+        }
+
+        AsyncGeocoder geocoder = new AsyncGeocoder(mActivity);
+        geocoder.getLocationAddress(geoPoint.getLatitude(), geoPoint.getLongitude(), new AsyncGeocoder.Callback() {
+            @Override
+            public void onSuccess(List<Address> locations) {
+                SpoofingPlaceInfo.address = locations.get(0).getAddressLine(0);
+            }
+
+            @Override
+            public void onError() {
+                SpoofingPlaceInfo.address = String.format("%s, %s", geoPoint.getLatitude(), geoPoint.getLongitude());
+            }
+        });
+    }
 
     public void startSpoofing(GeoPoint geoPoint, double distance, Activity mActivity, boolean isRoute) {
         int requestCode = (isRoute) ? ROUTE_SETTINGS_REQUEST_CODE : FIXED_SETTINGS_REQUEST_CODE;

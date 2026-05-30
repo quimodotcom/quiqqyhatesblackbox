@@ -218,7 +218,7 @@
                 app:iconGravity="textStart" />
 
             <LinearLayout
-                android:id="@+id/time_trial_options"
+                android:id="@+id/realtime_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="18dp"
@@ -233,7 +233,7 @@
                     android:textColor="@color/uicolor_text_high" />
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/time_trial_buffer_input"
+                    android:id="@+id/realtime_buffer_input"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"

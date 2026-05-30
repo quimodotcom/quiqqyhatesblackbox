@@ -76,8 +76,8 @@
     <string name="open_settings">Open the settings</string>
     <string name="back">Back</string>
     <string name="developer_options_disabled">Developer options is disabled!</string>
-    <string name="developer_options_instruction">1) Go to Settings<![CDATA[<br>]]>2) Find \"About Phone\" click<![CDATA[<br>]]>3) Find and tap 7 times on item \"Build Number\"<![CDATA[<br>]]>4) Return general menu of settings and click \"Developer Options\"<![CDATA[<br>]]>5) Find item \"Mock Locations\" or \"Simulate Locations\"<![CDATA[<br>]]>6) Tap, and select Quiqqy Hates Blackboxes.</string>
-    <string name="developer_options_instruction_miui">1) Go to Settings<![CDATA[<br>]]>2) Find \"About Phone\" click<![CDATA[<br>]]>3) Find and tap 7 times on item \"Build Number\"<![CDATA[<br>]]>4) Return general menu of settings and click \"Developer Options\"<![CDATA[<br>]]>5) Find item \"Mock Locations\"<![CDATA[<br>]]>6) Tap, and select Quiqqy Hates Blackboxes.</string>
+    <string name="developer_options_instruction">1) Go to Settings<![CDATA[<br>]]>2) Find "About Phone" click<![CDATA[<br>]]>3) Find and tap 7 times on item "Build Number"<![CDATA[<br>]]>4) Return general menu of settings and click "Developer Options"<![CDATA[<br>]]>5) Find item "Mock Locations" or "Simulate Locations"<![CDATA[<br>]]>6) Tap, and select Quiqqy Hates Blackboxes.</string>
+    <string name="developer_options_instruction_miui">1) Go to Settings<![CDATA[<br>]]>2) Find "About Phone" click<![CDATA[<br>]]>3) Find and tap 7 times on item "Build Number"<![CDATA[<br>]]>4) Return general menu of settings and click "Developer Options"<![CDATA[<br>]]>5) Find item "Mock Locations"<![CDATA[<br>]]>6) Tap, and select Quiqqy Hates Blackboxes.</string>
     <string name="miui_developer_instruction_link">https://www.youtube.com/watch?v=bjntq8-72hw</string>
     <string name="aosp_developer_instruction_link">https://www.youtube.com/watch?v=uMjyb3wf1Lw</string>
     <string name="oneui_developer_instruction_link">https://www.youtube.com/watch?v=gKLB_A8HBNI</string>
@@ -104,7 +104,7 @@
     <string name="difference_error">Difference (±) can\'t be bigger or equal to speed</string>
     <string name="joystick">Joystick</string>
     <string name="draw_overlays_permission">Overlays</string>
-    <string name="draw_overlays_summary">For joystick to work required draw overlays permission. Please grant this permissions in opened window, after clicked button \"Grant\"</string>
+    <string name="draw_overlays_summary">For joystick to work required draw overlays permission. Please grant this permissions in opened window, after clicked button "Grant"</string>
     <string name="grant">Grant</string>
     <string name="joystick_mode">Joystick Mode</string>
     <string name="from_current_loc">From my current location</string>
@@ -138,7 +138,7 @@
     <string name="static_spoof">Fixed</string>
     <string name="route_spoof">Route</string>
     <string name="bookmark_label">Label:</string>
-    <string name="where_from_info">\"Where from: \"</string>
+    <string name="where_from_info">"Where from: "</string>
     <string name="start">Start</string>
     <string name="address">Address</string>
     <string name="remove">Delete</string>

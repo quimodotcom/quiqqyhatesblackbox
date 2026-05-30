@@ -1,8 +1,10 @@
 package com.quimodotcom.blackboxcure.Services;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.os.IBinder;
@@ -32,6 +34,17 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class RealtimeSpooferService extends Service {
 
     public static final String KEY_BUFFER_DELAY = "buffer_delay";
+    public static final String ACTION_FINISH_RECORDING = "com.quimodotcom.blackboxcure.FINISH_RECORDING";
+    public static final String KEY_START_LAT = "start_lat";
+    public static final String KEY_START_LON = "start_lon";
+
+    public static final int STATE_RECORDING = 0;
+    public static final int STATE_PLAYBACK = 1;
+
+    private int mCurrentState = STATE_RECORDING;
+    private long recordingStartTime = 0;
+    private long playbackStartTime = 0;
+    private Location startLocation = null;
 
     private LocationManager mLocationManager;
     private FusedLocationsProvider mFusedLocationProvider;
@@ -52,6 +65,17 @@ public class RealtimeSpooferService extends Service {
     // For path interpolation
     private Location currentTarget = null;
 
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (ACTION_FINISH_RECORDING.equals(intent.getAction())) {
+                mCurrentState = STATE_PLAYBACK;
+                playbackStartTime = System.currentTimeMillis();
+                Log.d("RealtimeSpoofer", "Switched to PLAYBACK state");
+            }
+        }
+    };
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         MainServiceControl.startServiceForeground(this);
@@ -65,11 +89,22 @@ public class RealtimeSpooferService extends Service {
 
         if (intent != null) {
             mBufferDelaySecs = intent.getIntExtra(KEY_BUFFER_DELAY, 10);
+            double startLat = intent.getDoubleExtra(KEY_START_LAT, 0);
+            double startLon = intent.getDoubleExtra(KEY_START_LON, 0);
+            if (startLat != 0 || startLon != 0) {
+                startLocation = new Location("start");
+                startLocation.setLatitude(startLat);
+                startLocation.setLongitude(startLon);
+            }
         }
 
+        mCurrentState = STATE_RECORDING;
+        recordingStartTime = System.currentTimeMillis();
+
+        registerReceiver(mReceiver, new IntentFilter(ACTION_FINISH_RECORDING));
         registerListeners();
 
-        mHandler.postDelayed(spoofLoop, mBufferDelaySecs * 1000L);
+        mHandler.postDelayed(spoofLoop, 1000);
 
         return START_STICKY;
     }
@@ -83,16 +118,26 @@ public class RealtimeSpooferService extends Service {
     };
 
     private void processBuffer() {
-        long targetTime = System.currentTimeMillis() - (mBufferDelaySecs * 1000L);
+        if (mCurrentState == STATE_RECORDING) {
+            if (startLocation != null) {
+                outputLocation(startLocation.getLatitude(), startLocation.getLongitude(), 0f, 0f, 10f);
+            } else if (!locationBuffer.isEmpty()) {
+                startLocation = new Location(locationBuffer.peek());
+                outputLocation(startLocation.getLatitude(), startLocation.getLongitude(), 0f, 0f, 10f);
+            }
+            return;
+        }
 
-        // Ensure we always have a current target that is delayed by exactly mBufferDelaySecs
-        // If the buffer has points older than targetTime, we can move towards them
-        while (currentTarget == null || currentTarget.getTime() <= targetTime) {
+        long elapsedPlayback = System.currentTimeMillis() - playbackStartTime;
+        long targetTimeInRecording = recordingStartTime + elapsedPlayback;
+
+        // In playback mode, we want to play points according to when they were recorded relative to start
+        while (currentTarget == null || currentTarget.getTime() <= targetTimeInRecording) {
             if (locationBuffer.isEmpty()) {
                 break;
             }
             Location head = locationBuffer.peek();
-            if (head.getTime() <= targetTime) {
+            if (head.getTime() <= targetTimeInRecording) {
                 currentTarget = locationBuffer.poll();
             } else {
                 break; // Next point is not ready yet
@@ -256,6 +301,9 @@ public class RealtimeSpooferService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        try {
+            unregisterReceiver(mReceiver);
+        } catch (Exception ignored) {}
         if (mLocationManager != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && nmeaListener != null) {
                 mLocationManager.removeNmeaListener(nmeaListener);
