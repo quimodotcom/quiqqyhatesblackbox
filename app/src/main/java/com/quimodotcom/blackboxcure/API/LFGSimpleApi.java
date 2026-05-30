@@ -179,7 +179,7 @@ public class LFGSimpleApi {
                     profilePath = "driving-car";
                     break;
             }
-            return "https://api.openrouteservice.org/v2/directions/" + profilePath + "/geojson";
+            return "https://api.heigit.org/ors/v2/directions/" + profilePath + "/geojson";
         }
 
         public void downloadRoute(android.content.Context context, DirectionsCallback callback) {
@@ -209,14 +209,17 @@ public class LFGSimpleApi {
                 coordinates.put(end);
 
                 data.put("coordinates", coordinates);
-                data.put("elevation", "true");
+                data.put("elevation", true);
 
                 // Add extra_info to retrieve speed limits for roads
                 JSONArray extraInfo = new JSONArray();
                 extraInfo.put("waytypes");
                 extraInfo.put("steepness");
-                extraInfo.put("speedlimit");
+                if (transport == ERouteTransport.ROUTE_CAR) {
+                    extraInfo.put("speedlimit");
+                }
                 data.put("extra_info", extraInfo);
+                data.put("instructions", false);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -246,12 +249,24 @@ public class LFGSimpleApi {
                 public void onResponse(@NonNull Call call, @NonNull Response _response) throws IOException {
                     try {
                         String responseString = _response.body().string();
-                        Log.d("RouteBuilder", "onResponse: " + responseString);
+                        Log.d("RouteBuilder", "onResponse: (" + _response.code() + ") " + responseString);
                         JSONObject contentObject = new JSONObject(responseString);
 
                         if (contentObject.has("error")) {
                             response.code = CODE_UNKNOWN_ERROR;
-                            response.error = contentObject.optJSONObject("error").optString("message", "Unknown ORS error");
+                            Object errorObj = contentObject.get("error");
+                            if (errorObj instanceof JSONObject) {
+                                response.error = ((JSONObject) errorObj).optString("message", "Unknown ORS error");
+                            } else {
+                                response.error = errorObj.toString();
+                            }
+                            callback.onResult(response);
+                            return;
+                        }
+
+                        if (!_response.isSuccessful()) {
+                            response.code = CODE_UNKNOWN_ERROR;
+                            response.error = "API Error: " + _response.code();
                             callback.onResult(response);
                             return;
                         }
