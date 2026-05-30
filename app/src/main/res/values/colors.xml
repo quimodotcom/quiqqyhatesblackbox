@@ -29,18 +29,18 @@
     <color name="divider">#17000000</color>
     <color name="transport_pressed">#2A000000</color>
 
-    <color name="uisearch_background">#222222</color>
-    <color name="uisearch_pressed">#111111</color>
-    <color name="uisearch_icon_tint">#00FF00</color>
-    <color name="uisearch_hint">#00CC00</color>
-    <color name="uisearch_textcolor">#00FF00</color>
+    <color name="uisearch_background">#1C1C1E</color>
+    <color name="uisearch_pressed">#2C2C2E</color>
+    <color name="uisearch_icon_tint">#00FF41</color>
+    <color name="uisearch_hint">#008F11</color>
+    <color name="uisearch_textcolor">#00FF41</color>
 
     <color name="dest_activity_backboard">#8B000000</color>
     <color name="uicolor">#000000</color>
-    <color name="uicolor_inverted">#00FF00</color>
+    <color name="uicolor_inverted">#00FF41</color>
 
-    <color name="uicolor_text_high">#00FF00</color>
-    <color name="uicolor_text_medium">#00CC00</color>
+    <color name="uicolor_text_high">#00FF41</color>
+    <color name="uicolor_text_medium">#008F11</color>
     <color name="background">#000000</color>
     <color name="activity_header">#000000</color>
     <color name="settings_block">#111111</color>
@@ -65,7 +65,7 @@
 
     <color name="white_accent">#E4E4E4</color>
     <color name="white_accent_pressed">#CFCFCF</color>
-    <color name="start_spoofing">#00FF00</color>
+    <color name="start_spoofing">#00FF41</color>
     <color name="stop_btn_color">#FF0000</color>
     <color name="red_tonal_button">#660000</color>
     <color name="stop_tonal_button">#AA0000</color>

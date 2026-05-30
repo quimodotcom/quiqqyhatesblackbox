@@ -16,11 +16,11 @@
         android:layout_height="wrap_content">
 
         <View
-            android:layout_margin="8dp"
+            android:layout_margin="12dp"
             android:id="@+id/drag"
-            android:layout_height="5dp"
-            android:layout_width="32dp"
-            style="@style/uisearchview"
+            android:layout_height="4dp"
+            android:layout_width="40dp"
+            android:background="#33FFFFFF"
             android:layout_centerHorizontal="true"/>
 
         <com.google.android.material.button.MaterialButtonToggleGroup

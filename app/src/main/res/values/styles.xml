@@ -25,9 +25,9 @@
     </style>
 
     <style name="LightTheme" parent="Theme.Material3.Light">
-        <item name="colorPrimary">#00FF00</item>
+        <item name="colorPrimary">#00FF41</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#00FF00</item>
+        <item name="colorAccent">#00FF41</item>
         <item name="backgroundColor">#000000</item>
         <item name="android:fontFamily">monospace</item>
     </style>
