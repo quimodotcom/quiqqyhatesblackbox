@@ -130,7 +130,7 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
                 currentRoute.setFollowSpeedLimits(followSpeedLimits);
                 currentRoute.setSmoothTurns(smoothTurns);
             }
-            startMocking();
+            startMocking(followSpeedLimits, smoothTurns);
         }
     }
 
@@ -148,7 +148,7 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
     }
 
 
-    private void startMocking() {
+    private void startMocking(boolean followSpeedLimits, boolean smoothTurns) {
         Intent intent = mActivity.getIntent();
 
         int speed = mSettingsPreferences.getInt(BlackBoxCureApp.SPEED, 60);
@@ -164,7 +164,8 @@ public class RouteSettingsPresenter implements RouteSettingsImpl.Presenter {
 
             info.setSpeed(speed);
             info.setSpeedDiff(speedDiff);
-
+            info.setFollowSpeedLimits(followSpeedLimits);
+            info.setSmoothTurns(smoothTurns);
 
             info.setStartingPauseTime(originTimeout);
 

@@ -195,15 +195,20 @@ public class LFGSimpleApi {
 
             Request request;
 
-            // Create POST request for OpenRouteService
-            Map<String, Object[]> coordinates = new HashMap<>();
-            coordinates.put("coordinates", new Object[]{
-                    new Object[]{sourcelong, sourcelat},
-                    new Object[]{destlong, destlat},
-            });
-
-            JSONObject data = new JSONObject(coordinates);
+            JSONObject data = new JSONObject();
             try {
+                // Create POST request for OpenRouteService
+                JSONArray coordinates = new JSONArray();
+                JSONArray start = new JSONArray();
+                start.put(sourcelong);
+                start.put(sourcelat);
+                JSONArray end = new JSONArray();
+                end.put(destlong);
+                end.put(destlat);
+                coordinates.put(start);
+                coordinates.put(end);
+
+                data.put("coordinates", coordinates);
                 data.put("elevation", "true");
 
                 // Add extra_info to retrieve speed limits for roads

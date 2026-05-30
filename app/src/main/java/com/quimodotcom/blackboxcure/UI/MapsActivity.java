@@ -288,8 +288,8 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) getLocation.getLayoutParams();
             params.bottomMargin = bottomInset + params.bottomMargin;
-            params = (ViewGroup.MarginLayoutParams) mMenuIcon.getLayoutParams();
-            params.topMargin = topInset;
+            params = (ViewGroup.MarginLayoutParams) findViewById(R.id.settings_card).getLayoutParams();
+            params.topMargin = topInset + 16;
 
             mBottomSheet.setPeekHeight(findViewById(R.id.search_layout).getMeasuredHeight() + bottomInset);
 

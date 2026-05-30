@@ -35,7 +35,7 @@ public class RouteBuilder {
     public interface IRouteBuilder {
         void prepare();
         void onRouteBuilt(ArrayList<GeoPoint> points, ArrayList<Integer> speedLimits, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport);
-        void onRouteError(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport);
+        void onRouteError(ArrayList<GeoPoint> points, String error, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport);
         void captchaResponse();
     }
 
@@ -72,7 +72,7 @@ public class RouteBuilder {
                 response.result.add(new GeoPoint(destLat, destLng));
                 response.distance = 0;
 
-                activity.runOnUiThread(() -> listener.onRouteError(response.result, originLat, originLng, destLat, destLng, response.distance, transport));
+                activity.runOnUiThread(() -> listener.onRouteError(response.result, response.error, originLat, originLng, destLat, destLng, response.distance, transport));
             } else if (response.code == CODE_RECAPTCHA_RESPONSE || response.code == CODE_BAD_RECAPTCHA_RESPONSE) {
                 activity.runOnUiThread(listener::captchaResponse);
             }

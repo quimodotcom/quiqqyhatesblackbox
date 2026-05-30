@@ -233,6 +233,7 @@ public class RouteSpooferService extends Service {
                     mSlicesSpeeds[i] = new ArrayList<>();
                     RouteManager.startMotion(points, routeInfo.getSpeedLimits(), mSlices[i], mSlicesSpeeds[i], routeInfo.getSmoothTurns());
                 } else {
+                    mSlicesSpeeds[i] = null;
                     RouteManager.startMotion(points, null, mSlices[i], null, routeInfo.getSmoothTurns());
                 }
 
