@@ -278,7 +278,13 @@ public class LFGSimpleApi {
                             return;
                         }
 
-                        JSONArray routeArray = contentObject.has("routes") ? contentObject.getJSONArray("routes") : contentObject.getJSONArray("features");
+                        JSONArray routeArray = contentObject.has("features") ? contentObject.getJSONArray("features") : contentObject.optJSONArray("routes");
+                        if (routeArray == null || routeArray.length() == 0) {
+                            response.code = CODE_UNKNOWN_ERROR;
+                            response.error = "No route found in response";
+                            callback.onResult(response);
+                            return;
+                        }
                         JSONObject routes = routeArray.getJSONObject(0);
 
                         if (contentObject.has("features")) { // ORS v2
