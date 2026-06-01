@@ -16,22 +16,26 @@
         android:layout_height="wrap_content">
 
         <View
-            android:layout_margin="8dp"
             android:id="@+id/drag"
-            android:layout_height="5dp"
-            android:layout_width="32dp"
             style="@style/uisearchview"
-            android:layout_centerHorizontal="true"/>
+            android:layout_width="48dp"
+            android:layout_height="4dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="12dp"
+            android:background="@color/uicolor_text_medium"
+            android:alpha="0.2" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/mode_toggle_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/drag"
-            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:singleSelection="true"
-            app:checkedButton="@+id/btn_manual_mode">
+            app:checkedButton="@+id/btn_manual_mode"
+            app:selectionRequired="true">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_manual_mode"
@@ -92,24 +96,33 @@
                     android:textSize="12sp" />
             </com.facebook.shimmer.ShimmerFrameLayout>
 
-            <TextView
-                android:id="@+id/where_to"
-                style="@style/uisearchview"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/where_to_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="18dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="18dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
-                android:drawableStart="@drawable/ic_route"
-                android:gravity="center_vertical"
-                android:lines="1"
-                android:padding="8dp"
-                android:paddingStart="8dp"
-                android:text="@string/where_to"
-                android:textColor="@color/uicolor_text_high"
-                android:textSize="18sp" />
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="@color/cardview_infobar">
+
+                <TextView
+                    android:id="@+id/where_to"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:drawableStart="@drawable/ic_search"
+                    android:drawablePadding="16dp"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/where_to"
+                    android:textColor="@color/uicolor_text_high"
+                    android:textSize="17sp" />
+            </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/add_more_points"
@@ -125,43 +138,39 @@
                 android:textColor="@color/uicolor"
                 android:text="@string/add_more_route"/>
 
-            <RelativeLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/start_spoofing"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/start_spoofing"
-                    style="@style/Widget.Material3.Button.Icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="18dp"
-                    android:layout_marginBottom="8dp"
-                    android:backgroundTint="@color/start_spoofing"
-                    android:gravity="center"
-                    android:lines="1"
-                    android:text="@string/start_spoofing"
-                    android:visibility="visible"
-                    app:icon="@drawable/ic_done"
-                    app:iconGravity="textStart" />
-            </RelativeLayout>
+                android:layout_height="64dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                app:cornerRadius="32dp"
+                android:backgroundTint="@color/start_spoofing"
+                android:text="@string/start_spoofing"
+                android:textSize="17sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                app:icon="@drawable/ic_done"
+                app:iconTint="@android:color/white"
+                app:iconGravity="textStart" />
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/please_enable_location_services"
-            style="@style/Widget.Material3.Button.TonalButton.Icon"
+            style="@style/Widget.Material3.Button.TonalButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/manual_mode_container"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginEnd="16dp"
+            app:cornerRadius="16dp"
             android:backgroundTint="@color/red_tonal_button"
-            android:gravity="center"
-            android:lines="1"
             android:text="@string/please_enable_location_services"
+            android:textAllCaps="false"
             android:visibility="visible"
             app:icon="@drawable/ic_location_warning"
             app:iconGravity="textStart" />
@@ -176,19 +185,21 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_static_spoofing"
-                style="@style/Widget.Material3.Button.Icon"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="18dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
+                app:cornerRadius="32dp"
                 android:backgroundTint="#2196F3"
-                android:gravity="center"
-                android:lines="1"
                 android:text="@string/start_static_spoofing"
-                android:textSize="18sp"
+                android:textSize="17sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 app:icon="@drawable/ic_done"
+                app:iconTint="@android:color/white"
                 app:iconGravity="textStart" />
         </LinearLayout>
 
@@ -202,19 +213,21 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_time_trial"
-                style="@style/Widget.Material3.Button.Icon"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="match_parent"
                 android:layout_height="64dp"
-                android:layout_marginStart="18dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="18dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
+                app:cornerRadius="32dp"
                 android:backgroundTint="#4CAF50"
-                android:gravity="center"
-                android:lines="1"
                 android:text="@string/start_recording"
-                android:textSize="18sp"
+                android:textSize="17sp"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
                 app:icon="@drawable/ic_done"
+                app:iconTint="@android:color/white"
                 app:iconGravity="textStart" />
 
             <LinearLayout
@@ -247,113 +260,102 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/stop_button"
-            style="@style/Widget.Material3.Button.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.TonalButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
             android:layout_below="@id/please_enable_location_services"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:lines="1"
+            app:cornerRadius="32dp"
             android:backgroundTint="@color/stop_btn_color"
-            android:gravity="center"
             android:text="@string/stop"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
             android:visibility="gone"
             app:icon="@drawable/ic_stop"
+            app:iconTint="@android:color/white"
             app:iconGravity="textStart" />
 
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/remote_route"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/action_buttons_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/please_enable_location_services"
-            android:layout_marginStart="18dp"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toStartOf="@id/start_spoofing"
-            android:backgroundTint="@color/red_tonal_button"
-            android:gravity="center"
-            android:text="@string/remote_route"
-            android:maxLines="1"
-            android:visibility="gone"
-            app:icon="@drawable/ic_delete"
-            app:iconGravity="textStart" />
+            android:layout_marginBottom="8dp">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/pause_button"
-            style="@style/Widget.Material3.Button.TonalButton.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/please_enable_location_services"
-            android:layout_marginStart="18dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toStartOf="@id/stop_button"
-            android:backgroundTint="@color/stop_tonal_button"
-            android:gravity="center"
-            android:text="@string/pause"
-            android:visibility="gone"
-            android:lines="1"
-            app:icon="@drawable/ic_pause"
-            android:textColor="@color/uicolor_inverted"
-            app:iconTint="@color/uicolor_inverted"
-            app:iconGravity="textStart" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/remote_route"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="28dp"
+                android:backgroundTint="@color/red_tonal_button"
+                android:text="@string/remote_route"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/pause_button"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="28dp"
+                android:backgroundTint="@color/stop_tonal_button"
+                android:text="@string/pause"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                app:icon="@drawable/ic_pause"
+                android:textColor="@color/uicolor_inverted"
+                app:iconTint="@color/uicolor_inverted"
+                app:iconGravity="textStart" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/edit_button"
-            style="@style/Widget.Material3.Button.TonalButton.Icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/please_enable_location_services"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toStartOf="@id/stop_button"
-            android:backgroundTint="@color/stop_tonal_button"
-            android:gravity="center"
-            android:text="@string/edit"
-            android:layout_marginEnd="4dp"
-            android:lines="1"
-            android:visibility="gone"
-            app:icon="@drawable/ic_edit_24dp"
-            app:iconGravity="textStart"
-            android:textColor="@color/uicolor_inverted"
-            app:iconTint="@color/uicolor_inverted" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit_button"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                app:cornerRadius="28dp"
+                android:backgroundTint="@color/stop_tonal_button"
+                android:text="@string/edit"
+                android:textAllCaps="false"
+                android:visibility="gone"
+                app:icon="@drawable/ic_edit_24dp"
+                android:textColor="@color/uicolor_inverted"
+                app:iconTint="@color/uicolor_inverted"
+                app:iconGravity="textStart" />
+        </LinearLayout>
 
     </RelativeLayout>
 
 
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/restore_location_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:icon="@drawable/ic_baseline_restore_24"
-        android:text="@string/restore_to_real_location"
-        android:backgroundTint="@color/cardview_infobar"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:textColor="@color/uicolor_text_high"
-        android:lines="1"
-        app:iconTint="@color/uicolor_text_high"/>
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/active_route_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         app:cardElevation="0dp"
         app:cardBackgroundColor="@color/cardview_infobar"
-        app:cardCornerRadius="16dp">
+        app:cardCornerRadius="24dp"
+        app:strokeWidth="0dp">
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -390,7 +392,7 @@
                 android:textColor="@color/uicolor_text_high"
                 android:textSize="@dimen/speed_text_size" />
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 
 </LinearLayout>

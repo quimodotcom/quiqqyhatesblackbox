@@ -19,8 +19,8 @@ public class LocationOperations {
 
     public void startStaticSpoofing(GeoPoint geoPoint, Activity mActivity) {
         Intent serviceIntent = new Intent(mActivity, FixedSpooferService.class);
-        serviceIntent.putExtra(ListickApp.LATITUDE, geoPoint.getLatitude());
-        serviceIntent.putExtra(ListickApp.LONGITUDE, geoPoint.getLongitude());
+        serviceIntent.putExtra(BlackBoxCureApp.LATITUDE, geoPoint.getLatitude());
+        serviceIntent.putExtra(BlackBoxCureApp.LONGITUDE, geoPoint.getLongitude());
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             mActivity.startForegroundService(serviceIntent);

@@ -376,6 +376,11 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
         isRoute = false;
 
         removeAllRoutes();
+
+        // Fully restart GPS
+        MockLocProvider.initTestProvider();
+        MockLocProvider.removeProviders();
+        onCurrentLocationClick();
     }
 
     @Override
@@ -438,6 +443,22 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
                     cancel, R.drawable.joystick);
 
             return;
+        }
+
+        // If manual mode (isRoute = false) and no route currently active, try to build a route from current location
+        if (!isRoute && (RouteManager.routes == null || RouteManager.routes.isEmpty())) {
+            Location myLoc = currentLocation.getLocation();
+            if (myLoc != null) {
+                Intent routeIntent = new Intent();
+                routeIntent.putExtra(SpoofingPlaceInfo.ORIGIN_LAT, myLoc.getLatitude());
+                routeIntent.putExtra(SpoofingPlaceInfo.ORIGIN_LNG, myLoc.getLongitude());
+                routeIntent.putExtra(SpoofingPlaceInfo.DEST_LAT, geoPoint.getLatitude());
+                routeIntent.putExtra(SpoofingPlaceInfo.DEST_LNG, geoPoint.getLongitude());
+                routeIntent.putExtra(SpoofingPlaceInfo.TRANSPORT, SpoofingPlaceInfo.transport != null ? SpoofingPlaceInfo.transport : ERouteTransport.ROUTE_CAR);
+                routeIntent.putExtra(SpoofingPlaceInfo.DEST_ADDRESS, String.format(java.util.Locale.ENGLISH, "%.4f, %.4f", geoPoint.getLatitude(), geoPoint.getLongitude()));
+                onRoute(routeIntent);
+                return;
+            }
         }
 
         if (PermissionManager.isMockLocationsEnabled(mContext) || PermissionManager.isSystemApp(mContext)) {
@@ -540,9 +561,14 @@ public class MapsPresenter implements MapsImpl.PresenterImpl {
             }
 
             @Override
-            public void onRouteError(ArrayList<GeoPoint> points, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
-                PrettyToast.show(mActivity, mActivity.getString(R.string.failed_to_build_route), R.drawable.ic_route);
-                onRouteBuilt(points, null, sourceLat, sourceLong, destLat, destLong, distance, transport);
+            public void onRouteError(ArrayList<GeoPoint> points, String error, double sourceLat, double sourceLong, double destLat, double destLong, double distance, ERouteTransport transport) {
+                mUserInterface.removeProgressLayout();
+                if (error != null && !error.isEmpty()) {
+                    PrettyToast.show(mActivity, error, R.drawable.ic_route);
+                } else {
+                    PrettyToast.show(mActivity, mActivity.getString(R.string.failed_to_build_route), R.drawable.ic_route);
+                }
+                // Do not call onRouteBuilt here to avoid straight-lining.
             }
 
             @Override

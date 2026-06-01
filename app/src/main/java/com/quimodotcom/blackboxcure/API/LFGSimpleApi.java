@@ -179,7 +179,7 @@ public class LFGSimpleApi {
                     profilePath = "driving-car";
                     break;
             }
-            return "https://api.openrouteservice.org/v2/directions/" + profilePath + "/geojson";
+            return "https://api.heigit.org/ors/v2/directions/" + profilePath + "/geojson";
         }
 
         public void downloadRoute(android.content.Context context, DirectionsCallback callback) {
@@ -195,23 +195,31 @@ public class LFGSimpleApi {
 
             Request request;
 
-            // Create POST request for OpenRouteService
-            Map<String, Object[]> coordinates = new HashMap<>();
-            coordinates.put("coordinates", new Object[]{
-                    new Object[]{sourcelong, sourcelat},
-                    new Object[]{destlong, destlat},
-            });
-
-            JSONObject data = new JSONObject(coordinates);
+            JSONObject data = new JSONObject();
             try {
-                data.put("elevation", "true");
+                // Create POST request for OpenRouteService
+                JSONArray coordinates = new JSONArray();
+                JSONArray start = new JSONArray();
+                start.put(sourcelong);
+                start.put(sourcelat);
+                JSONArray end = new JSONArray();
+                end.put(destlong);
+                end.put(destlat);
+                coordinates.put(start);
+                coordinates.put(end);
+
+                data.put("coordinates", coordinates);
+                data.put("elevation", true);
 
                 // Add extra_info to retrieve speed limits for roads
                 JSONArray extraInfo = new JSONArray();
                 extraInfo.put("waytypes");
                 extraInfo.put("steepness");
-                extraInfo.put("speedlimit");
+                if (transport == ERouteTransport.ROUTE_CAR) {
+                    extraInfo.put("speedlimit");
+                }
                 data.put("extra_info", extraInfo);
+                data.put("instructions", false);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -241,12 +249,24 @@ public class LFGSimpleApi {
                 public void onResponse(@NonNull Call call, @NonNull Response _response) throws IOException {
                     try {
                         String responseString = _response.body().string();
-                        Log.d("RouteBuilder", "onResponse: " + responseString);
+                        Log.d("RouteBuilder", "onResponse: (" + _response.code() + ") " + responseString);
                         JSONObject contentObject = new JSONObject(responseString);
 
                         if (contentObject.has("error")) {
                             response.code = CODE_UNKNOWN_ERROR;
-                            response.error = contentObject.optJSONObject("error").optString("message", "Unknown ORS error");
+                            Object errorObj = contentObject.get("error");
+                            if (errorObj instanceof JSONObject) {
+                                response.error = ((JSONObject) errorObj).optString("message", "Unknown ORS error");
+                            } else {
+                                response.error = errorObj.toString();
+                            }
+                            callback.onResult(response);
+                            return;
+                        }
+
+                        if (!_response.isSuccessful()) {
+                            response.code = CODE_UNKNOWN_ERROR;
+                            response.error = "API Error: " + _response.code();
                             callback.onResult(response);
                             return;
                         }
@@ -258,7 +278,13 @@ public class LFGSimpleApi {
                             return;
                         }
 
-                        JSONArray routeArray = contentObject.has("routes") ? contentObject.getJSONArray("routes") : contentObject.getJSONArray("features");
+                        JSONArray routeArray = contentObject.has("features") ? contentObject.getJSONArray("features") : contentObject.optJSONArray("routes");
+                        if (routeArray == null || routeArray.length() == 0) {
+                            response.code = CODE_UNKNOWN_ERROR;
+                            response.error = "No route found in response";
+                            callback.onResult(response);
+                            return;
+                        }
                         JSONObject routes = routeArray.getJSONObject(0);
 
                         if (contentObject.has("features")) { // ORS v2

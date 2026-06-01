@@ -125,8 +125,6 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mDoneContainer = findViewById(R.id.start_spoofing);
         mEditContainer = findViewById(R.id.edit_button);
         mAddMoreRoute = findViewById(R.id.add_more_points);
-        mRestoreLocation = findViewById(R.id.restore_location_button);
-
         mJoystickMessage = findViewById(R.id.joystick_mode_message);
 
         mPauseContainer.setOnClickListener(view -> mPresenter.handlePause());
@@ -212,8 +210,6 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
         mDoneContainer.setOnClickListener(v -> mPresenter.onSpoofClick(new GeoPoint(mMap.getMapCenter().getLatitude(), mMap.getMapCenter().getLongitude())));
         mStopContainer.setOnClickListener(view -> mPresenter.handleStop());
         mAddMoreRoute.setOnClickListener(view -> mPresenter.onAddMoreRoute(ActivityOptionsCompat.makeSceneTransitionAnimation(this, mSearchLayout, "whereTo")));
-        mRestoreLocation.setOnClickListener(v -> mPresenter.handleClear());
-
         getLocation.setOnClickListener(v -> mPresenter.onCurrentLocationClick());
 
         mStartTimeTrial.setOnClickListener(v -> {
@@ -288,8 +284,8 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
 
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) getLocation.getLayoutParams();
             params.bottomMargin = bottomInset + params.bottomMargin;
-            params = (ViewGroup.MarginLayoutParams) mMenuIcon.getLayoutParams();
-            params.topMargin = topInset;
+            params = (ViewGroup.MarginLayoutParams) findViewById(R.id.settings_card).getLayoutParams();
+            params.topMargin = topInset + 16;
 
             mBottomSheet.setPeekHeight(findViewById(R.id.search_layout).getMeasuredHeight() + bottomInset);
 
@@ -312,12 +308,10 @@ public class MapsActivity extends Edge2EdgeActivity implements MapsImpl.UIImpl, 
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                 getLocation.animate().translationY(1 - (slideOffset * 300)).setDuration(0).start();
                 mActiveRouteLayout.animate().alpha(0 + slideOffset).alpha(0+ slideOffset).setDuration(0).start();
-                mRestoreLocation.animate().alpha(0 + slideOffset).alpha(0+ slideOffset).setDuration(0).start();
             }
         });
         mBottomSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
         mActiveRouteLayout.setAlpha(0);
-        mRestoreLocation.setAlpha(0);
 
         mPresenter.onActivityLoad();
 
